@@ -9,6 +9,80 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Profile-->
+        <scene sceneID="uqL-6b-Uya">
+            <objects>
+                <viewController title="Profile" id="yR8-Ki-aqy" customClass="ProfileViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Gbm-ez-309">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Photo" translatesAutoresizingMaskIntoConstraints="NO" id="fHR-sT-LhN" userLabel="Avatar Image">
+                                <rect key="frame" x="16" y="52" width="70" height="70"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="70" id="Boy-Yt-nWJ"/>
+                                    <constraint firstAttribute="width" secondItem="fHR-sT-LhN" secondAttribute="height" multiplier="1:1" id="FjK-So-bfq"/>
+                                    <constraint firstAttribute="width" constant="70" id="MA5-8S-HDk"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lOo-pU-mU4" userLabel="Exit Button">
+                                <rect key="frame" x="333" y="65" width="44" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="3Eo-AL-U3S"/>
+                                    <constraint firstAttribute="width" constant="44" id="sMY-EQ-fvM"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" image="Exit"/>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Екатерина Новикова" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tfo-gc-7zc" userLabel="Name Label">
+                                <rect key="frame" x="16" y="130" width="361" height="28"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="23"/>
+                                <color key="textColor" name="YP White"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@ekaterina_nov" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="STw-gw-iqc" userLabel="Login Name Label">
+                                <rect key="frame" x="16" y="166" width="361" height="16"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" red="0.68235294120000001" green="0.68627450980000004" blue="0.70588235290000001" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello, world!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a5t-TZ-B41" userLabel="Description Label">
+                                <rect key="frame" x="16" y="190" width="361" height="16"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" name="YP White"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="YdQ-CY-8X5"/>
+                        <color key="backgroundColor" name="YP Black"/>
+                        <constraints>
+                            <constraint firstItem="tfo-gc-7zc" firstAttribute="leading" secondItem="fHR-sT-LhN" secondAttribute="leading" id="04d-9X-EGC"/>
+                            <constraint firstItem="YdQ-CY-8X5" firstAttribute="trailing" secondItem="tfo-gc-7zc" secondAttribute="trailing" constant="16" id="78r-cQ-Xcv"/>
+                            <constraint firstItem="STw-gw-iqc" firstAttribute="top" secondItem="tfo-gc-7zc" secondAttribute="bottom" constant="8" id="7fc-Qi-95E"/>
+                            <constraint firstItem="a5t-TZ-B41" firstAttribute="leading" secondItem="fHR-sT-LhN" secondAttribute="leading" id="IK3-Vy-Tab"/>
+                            <constraint firstItem="lOo-pU-mU4" firstAttribute="centerY" secondItem="fHR-sT-LhN" secondAttribute="centerY" id="K4Q-8J-QjY"/>
+                            <constraint firstItem="STw-gw-iqc" firstAttribute="leading" secondItem="fHR-sT-LhN" secondAttribute="leading" id="Y3f-ue-hFx"/>
+                            <constraint firstItem="a5t-TZ-B41" firstAttribute="top" secondItem="STw-gw-iqc" secondAttribute="bottom" constant="8" id="dId-T1-oH4"/>
+                            <constraint firstItem="fHR-sT-LhN" firstAttribute="top" secondItem="Gbm-ez-309" secondAttribute="top" constant="52" id="dk8-Ce-yIT" userLabel="Image View.top = top + 52"/>
+                            <constraint firstItem="a5t-TZ-B41" firstAttribute="trailing" secondItem="tfo-gc-7zc" secondAttribute="trailing" id="l6p-aj-n7n"/>
+                            <constraint firstItem="YdQ-CY-8X5" firstAttribute="trailing" secondItem="lOo-pU-mU4" secondAttribute="trailing" constant="16" id="pWv-dE-MAu"/>
+                            <constraint firstItem="fHR-sT-LhN" firstAttribute="leading" secondItem="YdQ-CY-8X5" secondAttribute="leading" constant="16" id="t6A-nO-4Lz" userLabel="Image View.leading = leading + 16"/>
+                            <constraint firstItem="tfo-gc-7zc" firstAttribute="top" secondItem="fHR-sT-LhN" secondAttribute="bottom" constant="8" id="txY-9e-z3a"/>
+                            <constraint firstItem="STw-gw-iqc" firstAttribute="trailing" secondItem="tfo-gc-7zc" secondAttribute="trailing" id="ydr-Bi-p1f"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="avatarImage" destination="fHR-sT-LhN" id="UCM-ll-9CV"/>
+                        <outlet property="descriptionLabel" destination="a5t-TZ-B41" id="7P4-K3-Wa9"/>
+                        <outlet property="exitButton" destination="lOo-pU-mU4" id="n4g-LC-pag"/>
+                        <outlet property="loginNameLabel" destination="STw-gw-iqc" id="3qQ-zU-rUN"/>
+                        <outlet property="nameLabel" destination="tfo-gc-7zc" id="lep-4G-WSo"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CpS-MW-rnE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="746" y="4"/>
+        </scene>
         <!--ImageList-->
         <scene sceneID="tne-QT-ifu">
             <objects>
@@ -101,9 +175,14 @@
     </scenes>
     <resources>
         <image name="0" width="1600" height="1059"/>
+        <image name="Exit" width="24" height="24"/>
+        <image name="Photo" width="70" height="70"/>
         <image name="like_button_on" width="42" height="42"/>
         <namedColor name="YP Black">
             <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="YP White">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
