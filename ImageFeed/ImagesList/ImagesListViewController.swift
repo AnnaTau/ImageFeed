@@ -5,31 +5,12 @@ class ImagesListViewController: UIViewController {
     @IBOutlet private var tableView: UITableView!
     // MARK: - Private Properties
     private let photosName: [String] = Array(0..<20).map{ "\($0)" }
-    private lazy var dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .long
-        formatter.timeStyle = .none
-        return formatter
-    }()
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.rowHeight = 200
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
-    }
-    
-    func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
-        guard let image = UIImage(named: "\(indexPath.row)") else { return }
-        cell.cellImage.image = image
-        cell.dateLabel.text = dateFormatter.string(from: Date())
-        if indexPath.row % 2 == 0 {
-            guard let likeOn = UIImage(named: "like_button_on") else { return }
-            cell.likeButton.imageView?.image = likeOn
-        } else {
-            guard let likeOff = UIImage(named: "like_button_off") else { return }
-            cell.likeButton.imageView?.image = likeOff
-        }
     }
 }
 
@@ -61,7 +42,7 @@ extension ImagesListViewController: UITableViewDataSource {
         guard let imageListCell = cell as? ImagesListCell else {
             return UITableViewCell()
         }
-        configCell(for: imageListCell, with: indexPath)
+        imageListCell.configCell(with: indexPath)
         return imageListCell
     }
     
