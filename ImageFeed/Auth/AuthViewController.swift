@@ -56,7 +56,8 @@ extension AuthViewController: WebViewViewControllerDelegate {
             navController.popViewController(animated: true)
         }
         oAuth2Service.fetchOAuthToken(code: code) { [weak self] result in
-            guard let self, let delegate = self.delegate else { return }
+            guard let self, let delegate = self.delegate 
+            else { preconditionFailure("AuthViewController no more exists") }
             switch result {
             case .success(let token):
                 self.oAuth2Storage.token = token

@@ -53,14 +53,22 @@ final class WebViewViewController: UIViewController {
     
     // MARK: - Private methods
     private func loadAuthView() {
-        guard var urlComponents = URLComponents(string: Constants.Auth.authorizeURLString) else { return }
+        guard var urlComponents = URLComponents(string: Constants.Auth.authorizeURLString) 
+        else {
+            print("some problem with authorizeURLString")
+            return
+        }
         urlComponents.queryItems = [
             URLQueryItem(name: "client_id", value: Constants.API.accessKey),
             URLQueryItem(name: "redirect_uri", value: Constants.API.redirectURI),
             URLQueryItem(name: "response_type", value: "code"),
             URLQueryItem(name: "scope", value: Constants.API.accessScope)
         ]
-        guard let url = urlComponents.url else { return }
+        guard let url = urlComponents.url 
+        else {
+            print("some problem with queryItems")
+            return
+        }
         let request = URLRequest(url: url)
         webView.load(request)
         updateProgress()
@@ -97,6 +105,7 @@ extension WebViewViewController: WKNavigationDelegate {
         {
             return codeItem.value
         } else {
+            print("unsuccessful attempt to get codeItem")
             return nil
         }
     }

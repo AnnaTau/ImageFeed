@@ -32,7 +32,11 @@ final class OAuth2Service {
     }
     
     private func getTokenURLRequest(code: String) -> URLRequest? {
-        guard var urlComponents = URLComponents(string: Constants.Token.baseURLString) else { return nil }
+        guard var urlComponents = URLComponents(string: Constants.Token.baseURLString)
+        else {
+            print("baseURLString is nil")
+            return nil
+        }
         urlComponents.queryItems = [
             URLQueryItem(name: "client_id", value: Constants.API.accessKey),
             URLQueryItem(name: "client_secret", value: Constants.API.secretKey),
@@ -40,7 +44,11 @@ final class OAuth2Service {
             URLQueryItem(name: "code", value: code),
             URLQueryItem(name: "grant_type", value: Constants.Token.grantType)
         ]
-        guard let url = urlComponents.url else { return nil }
+        guard let url = urlComponents.url 
+        else {
+            print("url is nil")
+            return nil
+        }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         return request

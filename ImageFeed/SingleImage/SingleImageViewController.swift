@@ -26,7 +26,11 @@ final class SingleImageViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        guard let image = image else { return }
+        guard let image = image 
+        else {
+            print("image is nil")
+            return
+        }
         imageView.image = image
         imageView.frame.size = image.size
         scrollView.minimumZoomScale = 0.1
