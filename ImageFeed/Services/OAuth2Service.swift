@@ -14,7 +14,7 @@ final class OAuth2Service {
     func fetchOAuthToken(code: String, completion: @escaping(_ result: Result<String, Error>) -> Void) {
         guard let request = getTokenURLRequest(code: code) 
         else {
-            print("code not received")
+            print("request is nil")
             return
         }
         let dataTask = URLSession.shared.data(for: request) { result in
