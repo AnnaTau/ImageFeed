@@ -12,7 +12,11 @@ final class OAuth2Service {
     private init() {}
     
     func fetchOAuthToken(code: String, completion: @escaping(_ result: Result<String, Error>) -> Void) {
-        guard let request = getTokenURLRequest(code: code) else { return }
+        guard let request = getTokenURLRequest(code: code) 
+        else {
+            print("code not received")
+            return
+        }
         let dataTask = URLSession.shared.data(for: request) { result in
             switch result {
             case .success(let data):
