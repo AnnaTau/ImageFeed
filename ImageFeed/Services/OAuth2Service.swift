@@ -9,15 +9,37 @@ import Foundation
 
 final class OAuth2Service {
     static let shared = OAuth2Service()
+    
+    private let urlSession = URLSession.shared
+    private var task: URLSessionTask?
+    private var lastCode: String?
+    
     private init() {}
     
     func fetchOAuthToken(code: String, completion: @escaping(_ result: Result<String, Error>) -> Void) {
-        guard let request = getTokenURLRequest(code: code) 
+        assert(Thread.isMainThread)
+        if task != nil {
+            if lastCode != code {
+                task?.cancel()
+            } else {
+                completion(.failure(AuthServiceError.invalidRequest))
+                return
+            }
+        } else {
+            if lastCode == code {
+                completion(.failure(AuthServiceError.invalidRequest))
+                return
+            }
+        }
+        
+        lastCode = code
+        guard let request = getTokenURLRequest(code: code)
         else {
-            print("request is nil")
+            completion(.failure(AuthServiceError.invalidRequest))
             return
         }
-        let dataTask = URLSession.shared.data(for: request) { result in
+        
+        let task = URLSession.shared.data(for: request) { [weak self] result in
             switch result {
             case .success(let data):
                 let decoder = JSONDecoder()
@@ -31,8 +53,11 @@ final class OAuth2Service {
             case .failure(let error):
                 completion(.failure(error))
             }
+            self?.task = nil
+            self?.lastCode = nil
         }
-        dataTask.resume()
+        self.task = task
+        task.resume()
     }
     
     private func getTokenURLRequest(code: String) -> URLRequest? {
@@ -68,4 +93,8 @@ enum DecoderError: Error, LocalizedError {
             return "Decoding error - \(error)"
         }
     }
+}
+
+enum AuthServiceError: Error {
+    case invalidRequest
 }
