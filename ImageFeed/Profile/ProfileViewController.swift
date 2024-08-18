@@ -9,6 +9,7 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
     // MARK: - Private Properties
+    private let profileService = ProfileService.shared
     private let avatarImage: UIImageView = UIImageView()
     private let exitButton: UIButton = UIButton()
     private let nameLabel: UILabel = configLabel(text: "Екатерина Новикова",
@@ -24,6 +25,7 @@ final class ProfileViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        updateProfileDetails(profile: profileService.profile ?? Profile(username: "", name: "", bio: ""))
         
         avatarImage.translatesAutoresizingMaskIntoConstraints = false
         let imageAvatar = UIImage(named: "avatar")
@@ -54,6 +56,12 @@ final class ProfileViewController: UIViewController {
             exitButton.centerYAnchor.constraint(equalTo: avatarImage.centerYAnchor),
             exitButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
         ])
+    }
+    
+    func updateProfileDetails(profile: Profile) {
+        nameLabel.text = profile.name
+        loginNameLabel.text = profile.loginName
+        descriptionLabel.text = profile.bio
     }
     
     // MARK: - Private functions
