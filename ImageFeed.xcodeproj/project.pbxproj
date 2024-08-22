@@ -30,6 +30,7 @@
 		5DE176C12C6B712D00661740 /* UIBlockingProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE176C02C6B712D00661740 /* UIBlockingProgressHUD.swift */; };
 		5DE176C32C6E88F100661740 /* ProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE176C22C6E88F100661740 /* ProfileService.swift */; };
 		5DE176C52C6E97BA00661740 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE176C42C6E97BA00661740 /* Profile.swift */; };
+		5DE176C72C752EBB00661740 /* ProfileImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE176C62C752EBB00661740 /* ProfileImageService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,6 +58,7 @@
 		5DE176C02C6B712D00661740 /* UIBlockingProgressHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBlockingProgressHUD.swift; sourceTree = "<group>"; };
 		5DE176C22C6E88F100661740 /* ProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileService.swift; sourceTree = "<group>"; };
 		5DE176C42C6E97BA00661740 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		5DE176C62C752EBB00661740 /* ProfileImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +154,7 @@
 				5DC70A952C602F7F00E48751 /* OAuth2Service.swift */,
 				5DC70A9D2C60F44100E48751 /* OAuth2TokenStorageService.swift */,
 				5DE176C22C6E88F100661740 /* ProfileService.swift */,
+				5DE176C62C752EBB00661740 /* ProfileImageService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -275,6 +278,7 @@
 				5DC70A912C5C264F00E48751 /* WebViewViewController.swift in Sources */,
 				5DC70AA32C62598600E48751 /* AuthViewControllerDelegate.swift in Sources */,
 				5DE176C52C6E97BA00661740 /* Profile.swift in Sources */,
+				5DE176C72C752EBB00661740 /* ProfileImageService.swift in Sources */,
 				5D6ECADF2C39C3470051BF50 /* SceneDelegate.swift in Sources */,
 				5DE176C12C6B712D00661740 /* UIBlockingProgressHUD.swift in Sources */,
 			);

@@ -10,6 +10,7 @@ import UIKit
 final class ProfileViewController: UIViewController {
     // MARK: - Private Properties
     private let profileService = ProfileService.shared
+    private var profileImageServiceObserver: NSObjectProtocol?
     private let avatarImage: UIImageView = UIImageView()
     private let exitButton: UIButton = UIButton()
     private let nameLabel: UILabel = configLabel(text: "Екатерина Новикова",
@@ -25,6 +26,18 @@ final class ProfileViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: ProfileImageService.didChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let self = self else { return }
+                self.updateAvatar()
+            }
+        updateAvatar()
+        
         updateProfileDetails(profile: profileService.profile ?? Profile(username: "", name: "", bio: ""))
         
         avatarImage.translatesAutoresizingMaskIntoConstraints = false
@@ -80,5 +93,13 @@ final class ProfileViewController: UIViewController {
         view.addSubview(loginNameLabel)
         view.addSubview(descriptionLabel)
         view.addSubview(exitButton)
+    }
+    
+    private func updateAvatar() {
+        guard
+            let profileImageURL = ProfileImageService.shared.avatarURL,
+            let url = URL(string: profileImageURL)
+        else { return }
+        // TODO [Sprint 11] Обновить аватар, используя Kingfisher
     }
 }
