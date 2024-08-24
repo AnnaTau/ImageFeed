@@ -27,19 +27,12 @@ final class ProfileService {
             return
         }
         
-        let task = URLSession.shared.data(for: request) { [weak self] result in
+        let task = URLSession.shared.objectTask(for: request) { [weak self] (result: Result<ProfileResult, Error>) in
             guard let self else { return }
             switch result {
-            case .success(let data):
-                let decoder = JSONDecoder()
-                decoder.keyDecodingStrategy = .convertFromSnakeCase
-                do {
-                    let responseBody = try decoder.decode(ProfileResult.self, from: data)
-                    self.profile = convert(profileResult: responseBody)
-                    handler(.success(responseBody))
-                } catch {
-                    handler(.failure(DecoderError.decodingError(error)))
-                }
+            case .success(let body):
+                self.profile = convert(profileResult: body)
+                handler(.success(body))
             case .failure(let error):
                 handler(.failure(error))
             }

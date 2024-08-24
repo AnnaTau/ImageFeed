@@ -29,24 +29,17 @@ final class ProfileImageService {
             return
         }
         
-        let task = URLSession.shared.data(for: request) { [weak self] result in
+        let task = URLSession.shared.objectTask(for: request) { [weak self] (result: Result<UserResult, Error>) in
             guard let self else { return }
             switch result {
-            case .success(let data):
-                let decoder = JSONDecoder()
-                decoder.keyDecodingStrategy = .convertFromSnakeCase
-                do {
-                    let responseBody = try decoder.decode(UserResult.self, from: data)
-                    self.avatarURL = responseBody.profile_image
-                    handler(.success(responseBody.profile_image))
-                    NotificationCenter.default
-                        .post(
-                            name: ProfileImageService.didChangeNotification,
-                            object: self,
-                            userInfo: ["URL": responseBody.profile_image])
-                } catch {
-                    handler(.failure(DecoderError.decodingError(error)))
-                }
+            case .success(let body):
+                self.avatarURL = body.profile_image.small
+                handler(.success(body.profile_image.small))
+                NotificationCenter.default
+                    .post(
+                        name: ProfileImageService.didChangeNotification,
+                        object: self,
+                        userInfo: ["URL": body.profile_image])
             case .failure(let error):
                 handler(.failure(error))
             }
@@ -69,5 +62,9 @@ final class ProfileImageService {
 }
 
 struct UserResult: Codable {
-    let profile_image: String
+    let profile_image: AvatarUrls
+}
+
+struct AvatarUrls: Codable {
+    let small: String
 }
