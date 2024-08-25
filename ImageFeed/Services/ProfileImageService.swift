@@ -25,6 +25,7 @@ final class ProfileImageService {
         
         guard let request = getProfileRequest(username: username)
         else {
+            print("Invalid request")
             handler(.failure(AuthServiceError.invalidRequest))
             return
         }
@@ -41,6 +42,7 @@ final class ProfileImageService {
                         object: self,
                         userInfo: ["URL": body.profile_image])
             case .failure(let error):
+                print("Invalid request/n \(error)")
                 handler(.failure(error))
             }
         }

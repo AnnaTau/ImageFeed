@@ -22,11 +22,13 @@ final class OAuth2Service {
             if lastCode != code {
                 task?.cancel()
             } else {
+                print("Invalid request")
                 completion(.failure(AuthServiceError.invalidRequest))
                 return
             }
         } else {
             if lastCode == code {
+                print("Invalid request")
                 completion(.failure(AuthServiceError.invalidRequest))
                 return
             }
@@ -35,6 +37,7 @@ final class OAuth2Service {
         lastCode = code
         guard let request = getTokenURLRequest(code: code)
         else {
+            print("Invalid request")
             completion(.failure(AuthServiceError.invalidRequest))
             return
         }
@@ -45,6 +48,7 @@ final class OAuth2Service {
             case .success(let body):
                 completion(.success(body.accessToken))
             case .failure(let error):
+                print("Invalid request/n \(error)")
                 completion(.failure(error))
             }
             self.task = nil

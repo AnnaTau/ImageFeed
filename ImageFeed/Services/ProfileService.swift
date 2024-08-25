@@ -23,6 +23,7 @@ final class ProfileService {
 
         guard let request = getProfileRequest()
         else {
+            print("Invalid request")
             handler(.failure(AuthServiceError.invalidRequest))
             return
         }
@@ -34,6 +35,7 @@ final class ProfileService {
                 self.profile = convert(profileResult: body)
                 handler(.success(body))
             case .failure(let error):
+                print("Invalid request/n \(error)")
                 handler(.failure(error))
             }
         }
