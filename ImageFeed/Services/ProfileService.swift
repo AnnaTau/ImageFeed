@@ -18,7 +18,7 @@ final class ProfileService {
     func fetchProfile(handler: @escaping(_ result: Result<ProfileResult, Error>) -> Void) {
         assert(Thread.isMainThread)
         if task != nil {
-            task?.cancel()
+            return
         }
 
         guard let request = getProfileRequest()

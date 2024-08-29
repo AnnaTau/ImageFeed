@@ -14,13 +14,12 @@ final class ProfileImageService {
     private (set) var avatarURL: String?
     private var task: URLSessionTask?
     
-    
     private init() {}
     
     func fetchProfileImageURL(username: String, _ handler: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
         if task != nil {
-            task?.cancel()
+            return
         }
         
         guard let request = getProfileRequest(username: username)
@@ -34,13 +33,13 @@ final class ProfileImageService {
             guard let self else { return }
             switch result {
             case .success(let body):
-                self.avatarURL = body.profile_image.small
-                handler(.success(body.profile_image.small))
+                self.avatarURL = body.profileImage.large
+                handler(.success(body.profileImage.large))
                 NotificationCenter.default
                     .post(
                         name: ProfileImageService.didChangeNotification,
                         object: self,
-                        userInfo: ["URL": body.profile_image])
+                        userInfo: ["URL": body.profileImage])
             case .failure(let error):
                 print("Invalid request/n \(error)")
                 handler(.failure(error))
@@ -64,9 +63,11 @@ final class ProfileImageService {
 }
 
 struct UserResult: Codable {
-    let profile_image: AvatarUrls
+    let profileImage: AvatarUrls
 }
 
 struct AvatarUrls: Codable {
     let small: String
+    let medium: String
+    let large: String
 }

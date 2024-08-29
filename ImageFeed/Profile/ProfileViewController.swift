@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     // MARK: - Private Properties
@@ -100,6 +101,14 @@ final class ProfileViewController: UIViewController {
             let profileImageURL = ProfileImageService.shared.avatarURL,
             let url = URL(string: profileImageURL)
         else { return }
-        // TODO [Sprint 11] Обновить аватар, используя Kingfisher
+        let processor = RoundCornerImageProcessor(cornerRadius: 80)
+        avatarImage.backgroundColor = UIColor.ypBlack
+        avatarImage.tintColor = UIColor.ypBlack
+        avatarImage.kf.setImage(with: url,
+                              placeholder: UIImage(named: "placeholder.jpeg"),
+                              options: [
+                                .processor(processor),
+                                .cacheSerializer(FormatIndicatedCacheSerializer.png)
+                              ])
     }
 }

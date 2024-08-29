@@ -64,17 +64,16 @@ extension SplashViewController: AuthViewControllerDelegate {
     
     private func fetchProfile(_ token: String) {
         UIBlockingProgressHUD.show()
-        profileService.fetchProfile { [weak self] result in
-            guard let self = self else { return }
+        profileService.fetchProfile { result in
             switch result {
             case .success(let profileResult):
-                ProfileImageService.shared.fetchProfileImageURL(username: profileResult.username) { [weak self] result in
-                    guard let self = self else { return }
+                print("Start loading avatar")
+                ProfileImageService.shared.fetchProfileImageURL(username: profileResult.username) { result in
                     switch result {
                     case .success(let avatarResult):
                         print("Avatar loaded")
                     case .failure(let error):
-                        preconditionFailure("Avatar loading failed")
+                        preconditionFailure("Avatar loading failed\n \(error)")
                     }
                 }
                 self.switchToTabBarController()
