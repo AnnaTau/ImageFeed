@@ -64,7 +64,8 @@ extension AuthViewController: WebViewViewControllerDelegate {
                 self.oAuth2Storage.token = token
                 delegate.didAuthenticate(self)
             case .failure(let error):
-                print(error.localizedDescription)
+                debugPrint("[AuthViewController webViewViewController] \(error.localizedDescription)")
+                vc.dismiss(animated: true)
                 UIBlockingProgressHUD.dismiss()
                 let alert = UIAlertController(title: "Что-то пошло не так",
                                               message: "Не удалось войти в систему",

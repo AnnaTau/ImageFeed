@@ -14,7 +14,7 @@ final class OAuth2TokenStorageService {
     
     var token: String? {
         get {
-            return KeychainWrapper.standard.string(forKey: Constants.Token.storageKey)
+            KeychainWrapper.standard.string(forKey: Constants.Token.storageKey)
         } set {
             if let newValue {
                 let isSuccess = KeychainWrapper.standard.set(newValue, forKey: Constants.Token.storageKey)

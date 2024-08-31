@@ -16,13 +16,13 @@ final class ProfileViewController: UIViewController {
     private let exitButton: UIButton = UIButton()
     private let nameLabel: UILabel = configLabel(text: "Екатерина Новикова",
                                          font: UIFont.systemFont(ofSize: 23, weight: .semibold),
-                                         color: UIColor.ypWhite)
+                                         color: .ypWhite)
     private let loginNameLabel: UILabel = configLabel(text: "@ekaterina_nov",
                                               font: UIFont.systemFont(ofSize: 13),
-                                              color: UIColor.ypGrey)
+                                              color: .ypGrey)
     private let descriptionLabel: UILabel = configLabel(text: "Hello, World!",
                                                 font: UIFont.systemFont(ofSize: 13),
-                                                color: UIColor.ypWhite)
+                                                color: .ypWhite)
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -40,6 +40,8 @@ final class ProfileViewController: UIViewController {
         updateAvatar()
         
         updateProfileDetails(profile: profileService.profile ?? Profile(username: "", name: "", bio: ""))
+        
+        view.backgroundColor = .ypBlack
         
         avatarImage.translatesAutoresizingMaskIntoConstraints = false
         let imageAvatar = UIImage(named: "avatar")
@@ -102,8 +104,8 @@ final class ProfileViewController: UIViewController {
             let url = URL(string: profileImageURL)
         else { return }
         let processor = RoundCornerImageProcessor(cornerRadius: 80)
-        avatarImage.backgroundColor = UIColor.ypBlack
-        avatarImage.tintColor = UIColor.ypBlack
+        avatarImage.backgroundColor = .ypBlack
+        avatarImage.tintColor = .ypBlack
         avatarImage.kf.setImage(with: url,
                               placeholder: UIImage(named: "placeholder.jpeg"),
                               options: [

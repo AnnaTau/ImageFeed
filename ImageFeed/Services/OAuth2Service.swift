@@ -22,13 +22,13 @@ final class OAuth2Service {
             if lastCode != code {
                 task?.cancel()
             } else {
-                print("Invalid request")
+                debugPrint("[OAuth2Service fetchOAuthToken] Invalid request")
                 completion(.failure(AuthServiceError.invalidRequest))
                 return
             }
         } else {
             if lastCode == code {
-                print("Invalid request")
+                debugPrint("[OAuth2Service fetchOAuthToken] Invalid request")
                 completion(.failure(AuthServiceError.invalidRequest))
                 return
             }
@@ -37,7 +37,7 @@ final class OAuth2Service {
         lastCode = code
         guard let request = getTokenURLRequest(code: code)
         else {
-            print("Invalid request")
+            debugPrint("[OAuth2Service fetchOAuthToken] Invalid request")
             completion(.failure(AuthServiceError.invalidRequest))
             return
         }
@@ -48,7 +48,7 @@ final class OAuth2Service {
             case .success(let body):
                 completion(.success(body.accessToken))
             case .failure(let error):
-                print("Invalid request/n \(error)")
+                debugPrint("[OAuth2Service fetchOAuthToken] Invalid request/n \(error)")
                 completion(.failure(error))
             }
             self.task = nil
@@ -61,7 +61,7 @@ final class OAuth2Service {
     private func getTokenURLRequest(code: String) -> URLRequest? {
         guard var urlComponents = URLComponents(string: Constants.Token.baseURLString)
         else {
-            print("baseURLString is nil")
+            debugPrint("[OAuth2Service getTokenURLRequest] baseURLString is nil")
             return nil
         }
         urlComponents.queryItems = [
@@ -73,7 +73,7 @@ final class OAuth2Service {
         ]
         guard let url = urlComponents.url 
         else {
-            print("url is nil")
+            debugPrint("[OAuth2Service getTokenURLRequest] url is nil")
             return nil
         }
         var request = URLRequest(url: url)

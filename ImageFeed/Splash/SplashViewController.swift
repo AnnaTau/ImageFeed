@@ -10,32 +10,44 @@ import UIKit
 final class SplashViewController: UIViewController {
     private let oAuth2Storage = OAuth2TokenStorageService.shared
     private let profileService = ProfileService.shared
-    private let showAuthenticationScreenSegueIdentifier = "ShowAuthScene"
+    
+    private let logoImage: UIImageView = UIImageView()
     
     // MARK: - Lifecycle
+    override func viewDidLoad() {
+        view.backgroundColor = .ypBlack
+        
+        logoImage.translatesAutoresizingMaskIntoConstraints = false
+        let imageLogo = UIImage(named: "splash_screen_logo")
+        logoImage.image = imageLogo
+        
+        view.addSubview(logoImage)
+        
+        NSLayoutConstraint.activate([
+            logoImage.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
+            logoImage.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            logoImage.widthAnchor.constraint(equalToConstant: 75),
+            logoImage.heightAnchor.constraint(equalToConstant: 77)
+        ])
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if let token = oAuth2Storage.token {
-            print(token)
+            debugPrint(token)
             fetchProfile(token)
             switchToTabBarController()
         } else {
-            performSegue(withIdentifier: showAuthenticationScreenSegueIdentifier, sender: nil)
-        }
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == showAuthenticationScreenSegueIdentifier {
+            let storyboard = UIStoryboard(name: "Main", bundle: .main)
             guard
-                let navigationController = segue.destination as? UINavigationController,
-                let viewController = navigationController.viewControllers[0] as? AuthViewController
+                let authViewController = storyboard.instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController
             else {
-                assertionFailure("Failed to prepare for \(showAuthenticationScreenSegueIdentifier)")
+                assertionFailure("Failed init AuthViewController")
                 return
             }
-            viewController.delegate = self
-        } else {
-            super.prepare(for: segue, sender: sender)
+            authViewController.delegate = self
+            authViewController.modalPresentationStyle = UIModalPresentationStyle.fullScreen
+            present(authViewController, animated: true, completion: nil)
         }
     }
     
@@ -47,6 +59,10 @@ final class SplashViewController: UIViewController {
         let tabBarController = UIStoryboard(name: "Main", bundle: .main)
             .instantiateViewController(withIdentifier: "TabBarViewController")
         window.rootViewController = tabBarController
+        
+        let options: UIView.AnimationOptions = .transitionCrossDissolve
+        let duration: TimeInterval = 0.3
+        UIView.transition(with: window, duration: duration, options: options, animations: {}, completion: nil)
     }
 }
 
@@ -67,19 +83,19 @@ extension SplashViewController: AuthViewControllerDelegate {
         profileService.fetchProfile { result in
             switch result {
             case .success(let profileResult):
-                print("Start loading avatar")
+                debugPrint("[SplashViewController fetchProfile] Start loading avatar")
                 ProfileImageService.shared.fetchProfileImageURL(username: profileResult.username) { result in
                     switch result {
                     case .success(let avatarResult):
-                        print("Avatar loaded")
+                        debugPrint("[SplashViewController fetchProfile] Avatar loaded")
                     case .failure(let error):
-                        preconditionFailure("Avatar loading failed\n \(error)")
+                        debugPrint("[SplashViewController fetchProfile] Avatar loading failed\n \(error)")
                     }
                 }
                 self.switchToTabBarController()
                 UIBlockingProgressHUD.dismiss()
             case .failure(let error):
-                preconditionFailure("Profile loading failed")
+                preconditionFailure("Profile loading failed\n \(error)")
             }
         }
         UIBlockingProgressHUD.dismiss()

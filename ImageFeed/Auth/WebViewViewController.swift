@@ -44,7 +44,7 @@ final class WebViewViewController: UIViewController {
     private func loadAuthView() {
         guard var urlComponents = URLComponents(string: Constants.Auth.authorizeURLString) 
         else {
-            print("some problem with authorizeURLString")
+            debugPrint("[WebViewViewController loadAuthView] some problem with authorizeURLString")
             return
         }
         urlComponents.queryItems = [
@@ -55,7 +55,7 @@ final class WebViewViewController: UIViewController {
         ]
         guard let url = urlComponents.url 
         else {
-            print("some problem with queryItems")
+            debugPrint("[WebViewViewController loadAuthView] some problem with queryItems")
             return
         }
         let request = URLRequest(url: url)
@@ -96,7 +96,7 @@ extension WebViewViewController: WKNavigationDelegate {
         {
             return codeItem.value
         } else {
-            print("unsuccessful attempt to get codeItem")
+            debugPrint("[WebViewViewController code] unsuccessful attempt to get codeItem")
             return nil
         }
     }
