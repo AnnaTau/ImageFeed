@@ -58,7 +58,10 @@ extension AuthViewController: WebViewViewControllerDelegate {
         }
         oAuth2Service.fetchOAuthToken(code: code) { [weak self] result in
             guard let self, let delegate = self.delegate
-            else { preconditionFailure("AuthViewController no more exists") }
+            else {
+                debugPrint("[AuthViewController webViewViewController] AuthViewController no more exists")
+                return
+            }
             switch result {
             case .success(let token):
                 self.oAuth2Storage.token = token

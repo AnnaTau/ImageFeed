@@ -95,7 +95,7 @@ extension SplashViewController: AuthViewControllerDelegate {
                 self.switchToTabBarController()
                 UIBlockingProgressHUD.dismiss()
             case .failure(let error):
-                preconditionFailure("Profile loading failed\n \(error)")
+                debugPrint("[SplashViewController fetchProfile] Profile loading failed\n \(error)")
             }
         }
         UIBlockingProgressHUD.dismiss()

@@ -50,7 +50,7 @@ final class ProfileImageService {
     }
     
     func getProfileRequest(username: String) -> URLRequest? {
-        guard let url = URL(string: "https://api.unsplash.com/users/\(username)") else {
+        guard let url = URL(string: "\(Constants.Profile.usersURLString)\(username)") else {
             preconditionFailure("Unable to construct profile request")
         }
         var request = URLRequest(url: url)
@@ -60,14 +60,4 @@ final class ProfileImageService {
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
-}
-
-struct UserResult: Codable {
-    let profileImage: AvatarUrls
-}
-
-struct AvatarUrls: Codable {
-    let small: String
-    let medium: String
-    let large: String
 }
