@@ -28,7 +28,7 @@ final class SingleImageViewController: UIViewController {
         super.viewDidLoad()
         guard let image = image 
         else {
-            print("image is nil")
+            debugPrint("[SingleImageViewController viewDidLoad] image is nil")
             return
         }
         imageView.image = image

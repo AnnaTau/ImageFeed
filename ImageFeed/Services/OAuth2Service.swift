@@ -9,36 +9,59 @@ import Foundation
 
 final class OAuth2Service {
     static let shared = OAuth2Service()
+    
+    private let urlSession = URLSession.shared
+    private var task: URLSessionTask?
+    private var lastCode: String?
+    
     private init() {}
     
     func fetchOAuthToken(code: String, completion: @escaping(_ result: Result<String, Error>) -> Void) {
-        guard let request = getTokenURLRequest(code: code) 
-        else {
-            print("request is nil")
-            return
-        }
-        let dataTask = URLSession.shared.data(for: request) { result in
-            switch result {
-            case .success(let data):
-                let decoder = JSONDecoder()
-                decoder.keyDecodingStrategy = .convertFromSnakeCase
-                do {
-                    let responseBody = try decoder.decode(OAuthTokenResponseBody.self, from: data)
-                    completion(.success(responseBody.accessToken))
-                } catch {
-                    completion(.failure(DecoderError.decodingError(error)))
-                }
-            case .failure(let error):
-                completion(.failure(error))
+        assert(Thread.isMainThread)
+        if task != nil {
+            if lastCode != code {
+                task?.cancel()
+            } else {
+                debugPrint("[OAuth2Service fetchOAuthToken] Invalid request")
+                completion(.failure(AuthServiceError.invalidRequest))
+                return
+            }
+        } else {
+            if lastCode == code {
+                debugPrint("[OAuth2Service fetchOAuthToken] Invalid request")
+                completion(.failure(AuthServiceError.invalidRequest))
+                return
             }
         }
-        dataTask.resume()
+        
+        lastCode = code
+        guard let request = getTokenURLRequest(code: code)
+        else {
+            debugPrint("[OAuth2Service fetchOAuthToken] Invalid request")
+            completion(.failure(AuthServiceError.invalidRequest))
+            return
+        }
+        
+        let task = URLSession.shared.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
+            guard let self else { return }
+            switch result {
+            case .success(let body):
+                completion(.success(body.accessToken))
+            case .failure(let error):
+                debugPrint("[OAuth2Service fetchOAuthToken] Invalid request/n \(error)")
+                completion(.failure(error))
+            }
+            self.task = nil
+            self.lastCode = nil
+        }
+        self.task = task
+        task.resume()
     }
     
     private func getTokenURLRequest(code: String) -> URLRequest? {
         guard var urlComponents = URLComponents(string: Constants.Token.baseURLString)
         else {
-            print("baseURLString is nil")
+            debugPrint("[OAuth2Service getTokenURLRequest] baseURLString is nil")
             return nil
         }
         urlComponents.queryItems = [
@@ -50,7 +73,7 @@ final class OAuth2Service {
         ]
         guard let url = urlComponents.url 
         else {
-            print("url is nil")
+            debugPrint("[OAuth2Service getTokenURLRequest] url is nil")
             return nil
         }
         var request = URLRequest(url: url)
@@ -68,4 +91,8 @@ enum DecoderError: Error, LocalizedError {
             return "Decoding error - \(error)"
         }
     }
+}
+
+enum AuthServiceError: Error {
+    case invalidRequest
 }

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftKeychainWrapper
 
 final class OAuth2TokenStorageService {
     static let shared = OAuth2TokenStorageService()
@@ -13,9 +14,17 @@ final class OAuth2TokenStorageService {
     
     var token: String? {
         get {
-            UserDefaults.standard.string(forKey: Constants.Token.storageKey)
+            KeychainWrapper.standard.string(forKey: Constants.Token.storageKey)
         } set {
-            UserDefaults.standard.setValue(newValue, forKey: Constants.Token.storageKey)
+            if let newValue {
+                let isSuccess = KeychainWrapper.standard.set(newValue, forKey: Constants.Token.storageKey)
+                guard isSuccess else {
+                    preconditionFailure("Writing auth token was fail")
+                }
+            } else {
+                preconditionFailure("Writing auth token was fail: newValue is nil")
+            }
+            
         }
     }
 }

@@ -7,10 +7,12 @@
 
 import UIKit
 import WebKit
+import ProgressHUD
 
 final class WebViewViewController: UIViewController {
     
     weak var delegate: WebViewViewControllerDelegate?
+    private var estimatedProgressObservation: NSKeyValueObservation?
     // MARK: - IB Outlets
     @IBOutlet private var webView: WKWebView!
     @IBOutlet weak var progressView: UIProgressView!
@@ -20,42 +22,29 @@ final class WebViewViewController: UIViewController {
         super.viewDidLoad()
         webView.navigationDelegate = self
         loadAuthView()
-        updateProgress()
+        estimatedProgressObservation = webView.observe(
+            \.estimatedProgress,
+             options: [],
+             changeHandler: { [weak self] _, _ in
+                 guard let self = self else { return }
+                 self.updateProgress()
+             })
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        webView.addObserver(
-            self,
-            forKeyPath: #keyPath(WKWebView.estimatedProgress),
-            options: .new,
-            context: nil)
         updateProgress()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), context: nil)
-    }
-    
-    override func observeValue(
-        forKeyPath keyPath: String?,
-        of object: Any?,
-        change: [NSKeyValueChangeKey : Any]?,
-        context: UnsafeMutableRawPointer?
-    ) {
-        if keyPath == #keyPath(WKWebView.estimatedProgress) {
-            updateProgress()
-        } else {
-            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-        }
     }
     
     // MARK: - Private methods
     private func loadAuthView() {
         guard var urlComponents = URLComponents(string: Constants.Auth.authorizeURLString) 
         else {
-            print("some problem with authorizeURLString")
+            debugPrint("[WebViewViewController loadAuthView] some problem with authorizeURLString")
             return
         }
         urlComponents.queryItems = [
@@ -66,7 +55,7 @@ final class WebViewViewController: UIViewController {
         ]
         guard let url = urlComponents.url 
         else {
-            print("some problem with queryItems")
+            debugPrint("[WebViewViewController loadAuthView] some problem with queryItems")
             return
         }
         let request = URLRequest(url: url)
@@ -87,11 +76,13 @@ extension WebViewViewController: WKNavigationDelegate {
         decidePolicyFor navigationAction: WKNavigationAction,
         decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
     ) {
+        UIBlockingProgressHUD.show()
         if let code = code(from: navigationAction) {
             delegate?.webViewViewController(self, didAuthenticateWithCode: code)
             decisionHandler(.cancel)
         } else {
             decisionHandler(.allow)
+            UIBlockingProgressHUD.dismiss()
         }
     }
     
@@ -105,7 +96,7 @@ extension WebViewViewController: WKNavigationDelegate {
         {
             return codeItem.value
         } else {
-            print("unsuccessful attempt to get codeItem")
+            debugPrint("[WebViewViewController code] unsuccessful attempt to get codeItem")
             return nil
         }
     }

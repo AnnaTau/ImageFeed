@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import ProgressHUD
 
 final class AuthViewController: UIViewController {
     weak var delegate: AuthViewControllerDelegate?
@@ -56,14 +57,27 @@ extension AuthViewController: WebViewViewControllerDelegate {
             navController.popViewController(animated: true)
         }
         oAuth2Service.fetchOAuthToken(code: code) { [weak self] result in
-            guard let self, let delegate = self.delegate 
-            else { preconditionFailure("AuthViewController no more exists") }
+            guard let self, let delegate = self.delegate
+            else {
+                debugPrint("[AuthViewController webViewViewController] AuthViewController no more exists")
+                return
+            }
             switch result {
             case .success(let token):
                 self.oAuth2Storage.token = token
                 delegate.didAuthenticate(self)
             case .failure(let error):
-                print(error.localizedDescription)
+                debugPrint("[AuthViewController webViewViewController] \(error.localizedDescription)")
+                vc.dismiss(animated: true)
+                UIBlockingProgressHUD.dismiss()
+                let alert = UIAlertController(title: "Что-то пошло не так",
+                                              message: "Не удалось войти в систему",
+                                              preferredStyle: .alert)
+                let action = UIAlertAction(title: "OK", style: .default) { _ in
+                    alert.dismiss(animated: true)
+                }
+                alert.addAction(action)
+                self.present(alert, animated: true, completion: nil)
             }
         }
     }

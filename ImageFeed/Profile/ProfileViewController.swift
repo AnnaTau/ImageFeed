@@ -6,24 +6,42 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     // MARK: - Private Properties
+    private let profileService = ProfileService.shared
+    private var profileImageServiceObserver: NSObjectProtocol?
     private let avatarImage: UIImageView = UIImageView()
     private let exitButton: UIButton = UIButton()
     private let nameLabel: UILabel = configLabel(text: "Екатерина Новикова",
                                          font: UIFont.systemFont(ofSize: 23, weight: .semibold),
-                                         color: UIColor.ypWhite)
+                                         color: .ypWhite)
     private let loginNameLabel: UILabel = configLabel(text: "@ekaterina_nov",
                                               font: UIFont.systemFont(ofSize: 13),
-                                              color: UIColor.ypGrey)
+                                              color: .ypGrey)
     private let descriptionLabel: UILabel = configLabel(text: "Hello, World!",
                                                 font: UIFont.systemFont(ofSize: 13),
-                                                color: UIColor.ypWhite)
+                                                color: .ypWhite)
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: ProfileImageService.didChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let self = self else { return }
+                self.updateAvatar()
+            }
+        updateAvatar()
+        
+        updateProfileDetails(profile: profileService.profile ?? Profile(username: "", name: "", bio: ""))
+        
+        view.backgroundColor = .ypBlack
         
         avatarImage.translatesAutoresizingMaskIntoConstraints = false
         let imageAvatar = UIImage(named: "avatar")
@@ -56,6 +74,12 @@ final class ProfileViewController: UIViewController {
         ])
     }
     
+    func updateProfileDetails(profile: Profile) {
+        nameLabel.text = profile.name
+        loginNameLabel.text = profile.loginName
+        descriptionLabel.text = profile.bio
+    }
+    
     // MARK: - Private functions
     private static func configLabel(text: String, font: UIFont, color: UIColor) -> UILabel {
         let label = UILabel()
@@ -72,5 +96,21 @@ final class ProfileViewController: UIViewController {
         view.addSubview(loginNameLabel)
         view.addSubview(descriptionLabel)
         view.addSubview(exitButton)
+    }
+    
+    private func updateAvatar() {
+        guard
+            let profileImageURL = ProfileImageService.shared.avatarURL,
+            let url = URL(string: profileImageURL)
+        else { return }
+        let processor = RoundCornerImageProcessor(cornerRadius: 80)
+        avatarImage.backgroundColor = .ypBlack
+        avatarImage.tintColor = .ypBlack
+        avatarImage.kf.setImage(with: url,
+                              placeholder: UIImage(named: "placeholder.jpeg"),
+                              options: [
+                                .processor(processor),
+                                .cacheSerializer(FormatIndicatedCacheSerializer.png)
+                              ])
     }
 }
