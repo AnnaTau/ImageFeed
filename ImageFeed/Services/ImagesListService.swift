@@ -87,7 +87,7 @@ final class ImagesListService {
                     welcomeDescription: photo.altDescription,
                     thumbImageURL: photo.urls.thumb,
                     largeImageURL: photo.urls.full,
-                    isLiked: photo.likes > 0
+                    isLiked: photo.likedByUser
                 )
             )
             
