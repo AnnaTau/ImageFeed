@@ -30,4 +30,9 @@ enum Constants {
         static let profileURLString: String = "https://api.unsplash.com/me"
         static let usersURLString: String = "https://api.unsplash.com/users/"
     }
+    
+    enum Photos {
+        static let photosURLString: String = "https://api.unsplash.com/photos"
+        static let perPage: Int = 10
+    }
 }

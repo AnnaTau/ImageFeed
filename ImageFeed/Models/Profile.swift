@@ -7,12 +7,21 @@
 
 import Foundation
 
+// MARK: - UI Model
 struct Profile {
     let username: String
     let name: String?
     var loginName: String {
         return "@\(username)"
     }
+    let bio: String?
+}
+
+// MARK: - Data Model
+struct ProfileResult: Codable {
+    let username: String
+    let firstName: String?
+    let lastName: String?
     let bio: String?
 }
 
