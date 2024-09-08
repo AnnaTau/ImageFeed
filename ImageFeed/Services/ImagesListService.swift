@@ -47,6 +47,7 @@ final class ImagesListService {
                 debugPrint("[ImagesListService fetchPhotosNextPage] Invalid request/n \(error)")
                 handler(.failure(error))
             }
+            self.task = nil
         }
         lastLoadedPage += 1
         self.task = task
