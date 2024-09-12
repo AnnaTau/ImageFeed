@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class SingleImageViewController: UIViewController {
     var image: UIImage? {
@@ -16,6 +17,7 @@ final class SingleImageViewController: UIViewController {
             rescaleAndCenterImageInScrollView(image: image)
         }
     }
+    var fullImageURLString: String?
     
     // MARK: - IB Outlets
     @IBOutlet private var shareButton: UIButton!
@@ -26,19 +28,12 @@ final class SingleImageViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        guard let image = image 
-        else {
-            debugPrint("[SingleImageViewController viewDidLoad] image is nil")
-            return
-        }
-        imageView.image = image
-        imageView.frame.size = image.size
-        scrollView.minimumZoomScale = 0.1
-        scrollView.maximumZoomScale = 1.25
-        rescaleAndCenterImageInScrollView(image: image)
+        loadImage()
+        setScales()
     }
     
     private func rescaleAndCenterImageInScrollView(image: UIImage) {
+        setScales()
         let minZoomScale = scrollView.minimumZoomScale
         let maxZoomScale = scrollView.maximumZoomScale
         let visibleRectSize = scrollView.bounds.size
@@ -52,6 +47,47 @@ final class SingleImageViewController: UIViewController {
         let x = (newContentSize.width - visibleRectSize.width) / 2
         let y = (newContentSize.height - visibleRectSize.height) / 2
         scrollView.setContentOffset(CGPoint(x: x, y: y), animated: false)
+    }
+    
+    private func setScales() {
+        scrollView.minimumZoomScale = 0.1
+        scrollView.maximumZoomScale = 1.25
+    }
+    
+    private func loadImage() {
+        UIBlockingProgressHUD.show()
+        guard let fullImageURLString = fullImageURLString,
+              let fullImageURL = URL(string: fullImageURLString)
+        else {
+            debugPrint("[SingleImageViewController viewDidLoad] image is nil")
+            return
+        }
+        imageView.kf.setImage(with: fullImageURL) { [weak self] result in
+            UIBlockingProgressHUD.dismiss()
+            guard let self = self else { return }
+            switch result {
+            case .success(let imageResult):
+                self.image = imageResult.image
+            case .failure:
+                UIBlockingProgressHUD.dismiss()
+                self.showError()
+            }
+        }
+    }
+    
+    private func showError() {
+        let alert = UIAlertController(title: "Что-то пошло не так",
+                                      message: "Попробовать ещё раз?",
+                                      preferredStyle: .alert)
+        let action = UIAlertAction(title: "Не надо", style: .default) { _ in
+            alert.dismiss(animated: true)
+        }
+        let reload = UIAlertAction(title: "Повторить", style: .default) { [self] _ in
+            self.loadImage()
+        }
+        alert.addAction(action)
+        alert.addAction(reload)
+        self.present(alert, animated: true, completion: nil)
     }
     
     // MARK: - IBActions

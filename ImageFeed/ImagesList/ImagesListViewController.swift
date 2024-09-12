@@ -37,17 +37,7 @@ final class ImagesListViewController: UIViewController {
                 return
             }
             let urlString = photos[indexPath.row].largeImageURL
-            guard let url = URL(string: urlString)
-            else { preconditionFailure() }
-            do {
-                let data = try Data(contentsOf: url)
-                viewController.image = UIImage(data: data)
-            } catch {
-                debugPrint("[ImagesListViewController prepare] \(error.localizedDescription)")
-            }
-//            viewController.imageView.kf.setImage(with: url,
-//                                                 placeholder: UIImage(named: "Stub"),
-//                                                 options: [])
+            viewController.fullImageURLString = urlString
         } else {
             super.prepare(for: segue, sender: sender)
         }
