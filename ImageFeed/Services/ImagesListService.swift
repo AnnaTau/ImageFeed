@@ -86,7 +86,7 @@ final class ImagesListService {
                     size: CGSize(width: photo.width, height: photo.height),
                     createdAt: dateFormat(date: photo.createdAt),
                     welcomeDescription: photo.altDescription,
-                    thumbImageURL: photo.urls.thumb,
+                    thumbImageURL: photo.urls.small,
                     largeImageURL: photo.urls.full,
                     isLiked: photo.likedByUser
                 )
@@ -97,8 +97,6 @@ final class ImagesListService {
     }
     
     private func dateFormat(date: String) -> Date {
-//        let isoDate = "2016-04-14T10:44:00+0000"
-        //               2016-05-03T11:00:28-04:00
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX") // set locale to reliable US_POSIX
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"

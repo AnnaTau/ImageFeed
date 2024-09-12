@@ -10,5 +10,13 @@
             </PersistentString>
          </PersistentStrings>
       </ContextState>
+      <ContextState
+         contextName = "ImagesListViewController.prepare(for:sender:):ImagesListViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "photos[indexPath.row]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
    </ContextStates>
 </VariablesViewState>

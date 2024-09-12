@@ -20,7 +20,7 @@ final class SingleImageViewController: UIViewController {
     // MARK: - IB Outlets
     @IBOutlet private var shareButton: UIButton!
     @IBOutlet private var backwardButton: UIButton!
-    @IBOutlet private var imageView: UIImageView!
+    @IBOutlet var imageView: UIImageView!
     @IBOutlet private var scrollView: UIScrollView!
     
     // MARK: - Lifecycle

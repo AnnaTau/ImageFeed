@@ -1,4 +1,5 @@
 import UIKit
+import Kingfisher
 
 final class ImagesListCell: UITableViewCell {
     static let reuseIdentifier = "ImagesListCell"
@@ -16,9 +17,18 @@ final class ImagesListCell: UITableViewCell {
         return formatter
     }()
     
-    public func configCell(with indexPath: IndexPath) {
-        guard let image = UIImage(named: "\(indexPath.row)") else { return }
-        cellImage.image = image
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        cellImage.kf.cancelDownloadTask()
+    }
+    
+    public func configCell(_ tableView: UITableView, with indexPath: IndexPath, url: URL) {
+        cellImage.kf.indicatorType = IndicatorType.activity
+        cellImage.kf.setImage(with: url,
+                              placeholder: UIImage(named: "Stub"),
+                              options: []) { _ in
+            tableView.reloadRows(at: [indexPath], with: .automatic) 
+        }
         dateLabel.text = dateFormatter.string(from: Date())
         if indexPath.row % 2 == 0 {
             guard let likeOn = UIImage(named: "like_button_on") else { return }
