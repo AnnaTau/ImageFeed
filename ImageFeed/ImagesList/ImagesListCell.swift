@@ -3,6 +3,7 @@ import Kingfisher
 
 final class ImagesListCell: UITableViewCell {
     static let reuseIdentifier = "ImagesListCell"
+    weak var delegate: ImagesListCellDelegate?
     
     // MARK: - IB Outlets
     @IBOutlet private var cellImage: UIImageView!
@@ -22,15 +23,19 @@ final class ImagesListCell: UITableViewCell {
         cellImage.kf.cancelDownloadTask()
     }
     
-    public func configCell(_ tableView: UITableView, with indexPath: IndexPath, url: URL) {
+    public func configCell(_ tableView: UITableView, with indexPath: IndexPath, url: URL, isLiked: Bool) {
         cellImage.kf.indicatorType = IndicatorType.activity
         cellImage.kf.setImage(with: url,
                               placeholder: UIImage(named: "Stub"),
                               options: []) { _ in
-            tableView.reloadRows(at: [indexPath], with: .automatic) 
+//            tableView.reloadRows(at: [indexPath], with: .automatic) 
         }
         dateLabel.text = dateFormatter.string(from: Date())
-        if indexPath.row % 2 == 0 {
+        setIsLiked(isLike: isLiked)
+    }
+    
+    func setIsLiked(isLike: Bool) {
+        if isLike {
             guard let likeOn = UIImage(named: "like_button_on") else { return }
             likeButton.imageView?.image = likeOn
         } else {
@@ -38,4 +43,9 @@ final class ImagesListCell: UITableViewCell {
             likeButton.imageView?.image = likeOff
         }
     }
+    
+    @IBAction func tapLikeButton() {
+        delegate?.imageListCellDidTapLike(self)
+    }
+    
 }

@@ -37,3 +37,7 @@ struct UrlsResult: Codable {
     let small: String
     let thumb: String
 }
+
+struct LikeResult: Codable {
+    let photo: PhotoResult
+}

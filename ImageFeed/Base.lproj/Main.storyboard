@@ -70,6 +70,9 @@
                                                     </constraints>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                     <state key="normal" image="like_button_on"/>
+                                                    <connections>
+                                                        <action selector="tapLikeButton" destination="zEh-cM-Qjb" eventType="touchUpInside" id="Yiw-Ig-LuU"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <color key="backgroundColor" name="YP Black"/>

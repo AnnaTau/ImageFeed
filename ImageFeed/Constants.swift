@@ -12,7 +12,7 @@ enum Constants {
         static let accessKey: String = "dV4inl3UtmKrC9KUhytRAFQFAi1UtqQ8aFtbuFE70tk"
         static let secretKey: String = "iVZG1jL0X4XJq1ERrp5zhFHx38Q-gnBn_L0w0RncE28"
         static let redirectURI: String = "urn:ietf:wg:oauth:2.0:oob"
-        static let accessScope: String = "public"
+        static let accessScope: String = "public+read_user+write_likes"
     }
     
     enum Token {
