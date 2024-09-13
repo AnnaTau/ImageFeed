@@ -11,6 +11,7 @@ import Kingfisher
 final class ProfileViewController: UIViewController {
     // MARK: - Private Properties
     private let profileService = ProfileService.shared
+    private let profileLogoutService = ProfileLogoutService.shared
     private var profileImageServiceObserver: NSObjectProtocol?
     private let avatarImage: UIImageView = UIImageView()
     private let exitButton: UIButton = UIButton()
@@ -50,6 +51,7 @@ final class ProfileViewController: UIViewController {
         exitButton.translatesAutoresizingMaskIntoConstraints = false
         let imageButton = UIImage(named: "logout_button")
         exitButton.setImage(imageButton, for: .normal)
+        exitButton.addTarget(self, action: #selector(tapLogoutButton), for: UIControl.Event.touchUpInside)
         
         addAllSubviews()
         
@@ -112,5 +114,15 @@ final class ProfileViewController: UIViewController {
                                 .processor(processor),
                                 .cacheSerializer(FormatIndicatedCacheSerializer.png)
                               ])
+    }
+    
+    @objc private func tapLogoutButton() {
+        profileLogoutService.logout()
+        guard let window = UIApplication.shared.windows.first else {
+            assertionFailure("Invalid window configuration")
+            return
+        }
+        window.rootViewController = SplashViewController()
+        window.makeKeyAndVisible()
     }
 }

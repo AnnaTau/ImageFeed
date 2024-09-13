@@ -17,6 +17,7 @@
 		5D6ECB342C4931700051BF50 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6ECB332C4931700051BF50 /* ProfileViewController.swift */; };
 		5D6ECB382C4DA25A0051BF50 /* SingleImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6ECB372C4DA25A0051BF50 /* SingleImageViewController.swift */; };
 		5D76C8952C93380F000D4131 /* ImagesListCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D76C8942C93380F000D4131 /* ImagesListCellDelegate.swift */; };
+		5D76C8972C943C49000D4131 /* ProfileLogoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D76C8962C943C48000D4131 /* ProfileLogoutService.swift */; };
 		5DC56B512C7D3A7500B47B5F /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 5DC56B502C7D3A7500B47B5F /* Kingfisher */; };
 		5DC56B542C810ABD00B47B5F /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = 5DC56B532C810ABD00B47B5F /* SwiftKeychainWrapper */; };
 		5DC56B572C81B75800B47B5F /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC56B562C81B75800B47B5F /* TabBarController.swift */; };
@@ -52,6 +53,7 @@
 		5D6ECB332C4931700051BF50 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		5D6ECB372C4DA25A0051BF50 /* SingleImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImageViewController.swift; sourceTree = "<group>"; };
 		5D76C8942C93380F000D4131 /* ImagesListCellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCellDelegate.swift; sourceTree = "<group>"; };
+		5D76C8962C943C48000D4131 /* ProfileLogoutService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileLogoutService.swift; sourceTree = "<group>"; };
 		5DC56B562C81B75800B47B5F /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		5DC56B582C8A4AE600B47B5F /* ImagesListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListService.swift; sourceTree = "<group>"; };
 		5DC56B5A2C8A4D7200B47B5F /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 				5DE176C22C6E88F100661740 /* ProfileService.swift */,
 				5DE176C62C752EBB00661740 /* ProfileImageService.swift */,
 				5DC56B582C8A4AE600B47B5F /* ImagesListService.swift */,
+				5D76C8962C943C48000D4131 /* ProfileLogoutService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -297,6 +300,7 @@
 				5DC70A992C60E98200E48751 /* OAuthTokenResponseBody.swift in Sources */,
 				5DC70A962C602F7F00E48751 /* OAuth2Service.swift in Sources */,
 				5DC56B592C8A4AE600B47B5F /* ImagesListService.swift in Sources */,
+				5D76C8972C943C49000D4131 /* ProfileLogoutService.swift in Sources */,
 				5DC70A9C2C60EFBF00E48751 /* URLSession+Extensions.swift in Sources */,
 				5D6ECADD2C39C3470051BF50 /* AppDelegate.swift in Sources */,
 				5DC70AA12C61537300E48751 /* SplashViewController.swift in Sources */,

@@ -149,6 +149,11 @@ final class ImagesListService {
         return photosResult
     }
     
+    func cleanImages() {
+        photos.removeAll()
+        lastLoadedPage = 0
+    }
+    
     private func dateFormat(date: String) -> Date {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX") // set locale to reliable US_POSIX

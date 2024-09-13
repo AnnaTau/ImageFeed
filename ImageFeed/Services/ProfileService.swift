@@ -56,6 +56,10 @@ final class ProfileService {
         return request
     }
     
+    func cleanProfile() {
+        profile = nil
+    }
+    
     private func convert(profileResult: ProfileResult) -> Profile {
         return Profile(
             username: profileResult.username,
