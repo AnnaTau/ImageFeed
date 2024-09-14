@@ -45,8 +45,9 @@ final class ProfileViewController: UIViewController {
         view.backgroundColor = .ypBlack
         
         avatarImage.translatesAutoresizingMaskIntoConstraints = false
-        let imageAvatar = UIImage(named: "avatar")
+        let imageAvatar = UIImage(named: "placeholder")
         avatarImage.image = imageAvatar
+        avatarImage.layer.cornerRadius = 80
         
         exitButton.translatesAutoresizingMaskIntoConstraints = false
         let imageButton = UIImage(named: "logout_button")
@@ -109,20 +110,33 @@ final class ProfileViewController: UIViewController {
         avatarImage.backgroundColor = .ypBlack
         avatarImage.tintColor = .ypBlack
         avatarImage.kf.setImage(with: url,
-                              placeholder: UIImage(named: "placeholder.jpeg"),
-                              options: [
-                                .processor(processor),
-                                .cacheSerializer(FormatIndicatedCacheSerializer.png)
-                              ])
+                                placeholder: UIImage(named: "placeholder.jpeg"),
+                                options: [
+                                    .processor(processor),
+                                    .cacheSerializer(FormatIndicatedCacheSerializer.png)
+                                ]) { _ in
+                                    debugPrint("Avatar installed")
+                                }
     }
     
     @objc private func tapLogoutButton() {
-        profileLogoutService.logout()
-        guard let window = UIApplication.shared.windows.first else {
-            assertionFailure("Invalid window configuration")
-            return
+        let alert = UIAlertController(title: "Пока, пока!",
+                                      message: "Уверены что хотите выйти?",
+                                      preferredStyle: .alert)
+        let yes = UIAlertAction(title: "Да", style: .default) { [self] _ in
+            self.profileLogoutService.logout()
+            guard let window = UIApplication.shared.windows.first else {
+                assertionFailure("Invalid window configuration")
+                return
+            }
+            window.rootViewController = SplashViewController()
+            window.makeKeyAndVisible()
         }
-        window.rootViewController = SplashViewController()
-        window.makeKeyAndVisible()
+        let no = UIAlertAction(title: "Нет", style: .default) { _ in
+            alert.dismiss(animated: true)
+        }
+        alert.addAction(yes)
+        alert.addAction(no)
+        self.present(alert, animated: true, completion: nil)
     }
 }

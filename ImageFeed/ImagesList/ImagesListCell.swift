@@ -23,14 +23,20 @@ final class ImagesListCell: UITableViewCell {
         cellImage.kf.cancelDownloadTask()
     }
     
-    public func configCell(_ tableView: UITableView, with indexPath: IndexPath, url: URL, isLiked: Bool) {
+    public func configCell(_ tableView: UITableView, photo: Photo) {
+        guard let url: URL = URL(string: photo.thumbImageURL)
+        else {
+            debugPrint("[ImagesListCell configCell] Problem with URL \(photo.thumbImageURL)")
+            return
+        }
+        let isLiked = photo.isLiked
         cellImage.kf.indicatorType = IndicatorType.activity
         cellImage.kf.setImage(with: url,
                               placeholder: UIImage(named: "Stub"),
                               options: []) { _ in
 //            tableView.reloadRows(at: [indexPath], with: .automatic) 
         }
-        dateLabel.text = dateFormatter.string(from: Date())
+        dateLabel.text = dateFormatter.string(for: photo.createdAt)
         setIsLiked(isLike: isLiked)
     }
     

@@ -16,6 +16,9 @@ final class ImagesListService {
     private var lastLoadedPage: Int = 0
     private var task: URLSessionTask?
     private var likeTask: URLSessionTask?
+    private lazy var dateFormatter: ISO8601DateFormatter = {
+        return ISO8601DateFormatter()
+    }()
     
     private init() {}
     
@@ -137,7 +140,7 @@ final class ImagesListService {
                 Photo(
                     id: photo.id,
                     size: CGSize(width: photo.width, height: photo.height),
-                    createdAt: dateFormat(date: photo.createdAt),
+                    createdAt: dateFormatter.date(from: photo.createdAt),
                     welcomeDescription: photo.altDescription,
                     thumbImageURL: photo.urls.small,
                     largeImageURL: photo.urls.full,
@@ -154,10 +157,4 @@ final class ImagesListService {
         lastLoadedPage = 0
     }
     
-    private func dateFormat(date: String) -> Date {
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX") // set locale to reliable US_POSIX
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-        return dateFormatter.date(from:date) ?? Date()
-    }
 }

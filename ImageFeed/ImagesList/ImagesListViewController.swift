@@ -101,14 +101,13 @@ extension ImagesListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier, for: indexPath)
-        guard let imageListCell = cell as? ImagesListCell,
-              let url: URL = URL(string: photos[indexPath.row].thumbImageURL)
+        guard let imageListCell = cell as? ImagesListCell
         else {
+            debugPrint("[ImagesListViewController tableView] Cell is not ImagesListCell")
             return UITableViewCell()
         }	
         imageListCell.delegate = self
-        let isLiked = self.photos[indexPath.row].isLiked
-        imageListCell.configCell(tableView, with: indexPath, url: url, isLiked: isLiked)
+        imageListCell.configCell(tableView, photo: photos[indexPath.row])
         return imageListCell
     }
     

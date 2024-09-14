@@ -36,7 +36,6 @@ final class SplashViewController: UIViewController {
         if let token = oAuth2Storage.token {
             debugPrint(token)
             fetchProfile(token)
-            switchToTabBarController()
         } else {
             let storyboard = UIStoryboard(name: "Main", bundle: .main)
             guard
@@ -74,7 +73,6 @@ extension SplashViewController: AuthViewControllerDelegate {
             return
         }
         fetchProfile(token)
-        switchToTabBarController()
         UIBlockingProgressHUD.dismiss()
     }
     
@@ -96,6 +94,18 @@ extension SplashViewController: AuthViewControllerDelegate {
                 UIBlockingProgressHUD.dismiss()
             case .failure(let error):
                 debugPrint("[SplashViewController fetchProfile] Profile loading failed\n \(error)")
+                let alert = UIAlertController(title: "Что-то пошло не так",
+                                              message: "Попробовать ещё раз?",
+                                              preferredStyle: .alert)
+                let action = UIAlertAction(title: "Не надо", style: .default) { _ in
+                    alert.dismiss(animated: true)
+                }
+                let reload = UIAlertAction(title: "Повторить", style: .default) { [self] _ in
+                    self.fetchProfile(token)
+                }
+                alert.addAction(action)
+                alert.addAction(reload)
+                self.present(alert, animated: true, completion: nil)
             }
         }
         UIBlockingProgressHUD.dismiss()
