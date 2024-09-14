@@ -45,9 +45,6 @@ final class ProfileViewController: UIViewController {
         view.backgroundColor = .ypBlack
         
         avatarImage.translatesAutoresizingMaskIntoConstraints = false
-        let imageAvatar = UIImage(named: "placeholder")
-        avatarImage.image = imageAvatar
-        avatarImage.layer.cornerRadius = 80
         
         exitButton.translatesAutoresizingMaskIntoConstraints = false
         let imageButton = UIImage(named: "logout_button")
@@ -109,8 +106,9 @@ final class ProfileViewController: UIViewController {
         let processor = RoundCornerImageProcessor(cornerRadius: 80)
         avatarImage.backgroundColor = .ypBlack
         avatarImage.tintColor = .ypBlack
+        avatarImage.kf.indicatorType = IndicatorType.activity
         avatarImage.kf.setImage(with: url,
-                                placeholder: UIImage(named: "placeholder.jpeg"),
+                                placeholder: UIImage(named: "placeholder"),
                                 options: [
                                     .processor(processor),
                                     .cacheSerializer(FormatIndicatedCacheSerializer.png)
