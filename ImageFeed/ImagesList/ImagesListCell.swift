@@ -33,9 +33,7 @@ final class ImagesListCell: UITableViewCell {
         cellImage.kf.indicatorType = IndicatorType.activity
         cellImage.kf.setImage(with: url,
                               placeholder: UIImage(named: "Stub"),
-                              options: []) { _ in
-//            tableView.reloadRows(at: [indexPath], with: .automatic) 
-        }
+                              options: [])
         dateLabel.text = dateFormatter.string(for: photo.createdAt)
         setIsLiked(isLike: isLiked)
     }

@@ -35,4 +35,9 @@ enum Constants {
         static let photosURLString: String = "https://api.unsplash.com/photos"
         static let perPage: Int = 10
     }
+    
+    enum Segues {
+        static let showSingleImageSegueIdentifier = "ShowSingleImage"
+        static let webViewSegueIdentifier = "WebViewSegue"
+    }
 }

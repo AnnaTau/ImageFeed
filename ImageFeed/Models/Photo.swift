@@ -8,6 +8,7 @@
 import Foundation
 
 // MARK: - UI Model
+
 struct Photo {
     let id: String
     let size: CGSize
@@ -19,6 +20,7 @@ struct Photo {
 }
 
 // MARK: - Data Model
+
 struct PhotoResult: Codable {
     let id: String
     let createdAt: String

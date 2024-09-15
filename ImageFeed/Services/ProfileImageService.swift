@@ -18,7 +18,7 @@ final class ProfileImageService {
     
     func fetchProfileImageURL(username: String, _ handler: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
-        if task != nil {
+        guard task == nil else {
             return
         }
         

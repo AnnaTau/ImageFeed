@@ -9,6 +9,7 @@ import Foundation
 import WebKit
 
 final class ProfileLogoutService {
+    
     static let shared = ProfileLogoutService()
     let oAuth2Storage = OAuth2TokenStorageService.shared
     let profileService = ProfileService.shared
@@ -33,4 +34,5 @@ final class ProfileLogoutService {
             }
         }
     }
+    
 }

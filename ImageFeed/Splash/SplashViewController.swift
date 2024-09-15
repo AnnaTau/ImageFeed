@@ -8,12 +8,14 @@
 import UIKit
 
 final class SplashViewController: UIViewController {
+    
     private let oAuth2Storage = OAuth2TokenStorageService.shared
     private let profileService = ProfileService.shared
     
     private let logoImage: UIImageView = UIImageView()
     
     // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         view.backgroundColor = .ypBlack
         
@@ -66,6 +68,7 @@ final class SplashViewController: UIViewController {
 }
 
 // MARK: - AuthViewControllerDelegate
+
 extension SplashViewController: AuthViewControllerDelegate {
     func didAuthenticate(_ vc: AuthViewController) {
         vc.dismiss(animated: true)
@@ -84,7 +87,7 @@ extension SplashViewController: AuthViewControllerDelegate {
                 debugPrint("[SplashViewController fetchProfile] Start loading avatar")
                 ProfileImageService.shared.fetchProfileImageURL(username: profileResult.username) { result in
                     switch result {
-                    case .success(let avatarResult):
+                    case .success(_):
                         debugPrint("[SplashViewController fetchProfile] Avatar loaded")
                     case .failure(let error):
                         debugPrint("[SplashViewController fetchProfile] Avatar loading failed\n \(error)")

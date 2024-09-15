@@ -8,6 +8,7 @@
 import Foundation
 
 // MARK: - UI Model
+
 struct Profile {
     let username: String
     let name: String?
@@ -18,6 +19,7 @@ struct Profile {
 }
 
 // MARK: - Data Model
+
 struct ProfileResult: Codable {
     let username: String
     let firstName: String?

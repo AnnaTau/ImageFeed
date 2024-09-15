@@ -16,16 +16,17 @@ final class ProfileViewController: UIViewController {
     private let avatarImage: UIImageView = UIImageView()
     private let exitButton: UIButton = UIButton()
     private let nameLabel: UILabel = configLabel(text: "Екатерина Новикова",
-                                         font: UIFont.systemFont(ofSize: 23, weight: .semibold),
-                                         color: .ypWhite)
+                                                 font: UIFont.systemFont(ofSize: 23, weight: .semibold),
+                                                 color: .ypWhite)
     private let loginNameLabel: UILabel = configLabel(text: "@ekaterina_nov",
-                                              font: UIFont.systemFont(ofSize: 13),
-                                              color: .ypGrey)
+                                                      font: UIFont.systemFont(ofSize: 13),
+                                                      color: .ypGrey)
     private let descriptionLabel: UILabel = configLabel(text: "Hello, World!",
-                                                font: UIFont.systemFont(ofSize: 13),
-                                                color: .ypWhite)
+                                                        font: UIFont.systemFont(ofSize: 13),
+                                                        color: .ypWhite)
     
     // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -81,6 +82,7 @@ final class ProfileViewController: UIViewController {
     }
     
     // MARK: - Private functions
+    
     private static func configLabel(text: String, font: UIFont, color: UIColor) -> UILabel {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false

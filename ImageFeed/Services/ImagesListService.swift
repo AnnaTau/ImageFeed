@@ -22,10 +22,12 @@ final class ImagesListService {
     
     private init() {}
     
+    // MARK: - Photos methods
+    
     func fetchPhotosNextPage(handler: @escaping(_ result: Result<[PhotoResult], Error>) -> Void) {
         let nextPage = lastLoadedPage + 1
         assert(Thread.isMainThread)
-        if task != nil {
+        guard task == nil else {
             return
         }
         
@@ -58,9 +60,34 @@ final class ImagesListService {
         task.resume()
     }
     
+    func getPhotosRequest(page: Int) -> URLRequest? {
+        guard var urlComponents = URLComponents(string: Constants.Photos.photosURLString)
+        else {
+            debugPrint("[ImagesListService getPhotosRequest] baseURLString is nil")
+            return nil
+        }
+        urlComponents.queryItems = [
+            URLQueryItem(name: "page", value: "\(page)"),
+            URLQueryItem(name: "per_page", value: "\(Constants.Photos.perPage)")
+        ]
+        guard let url = urlComponents.url
+        else {
+            debugPrint("[ImagesListService getPhotosRequest] url is nil")
+            return nil
+        }
+        var request = URLRequest(url: url)
+        guard let token = oAuth2Storage.token else {
+            preconditionFailure("Token is nil")
+        }
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        return request
+    }
+    
+    // MARK: - Like methods
+    
     func changeLike(photoId: String, isLike: Bool, _ handler: @escaping (Result<LikeResult, Error>) -> Void) {
         assert(Thread.isMainThread)
-        if likeTask != nil {
+        guard likeTask == nil else {
             return
         }
         
@@ -107,29 +134,6 @@ final class ImagesListService {
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         if isLike { request.httpMethod = "POST" }
         else { request.httpMethod = "DELETE" }
-        return request
-    }
-    
-    func getPhotosRequest(page: Int) -> URLRequest? {
-        guard var urlComponents = URLComponents(string: Constants.Photos.photosURLString)
-        else {
-            debugPrint("[ImagesListService getPhotosRequest] baseURLString is nil")
-            return nil
-        }
-        urlComponents.queryItems = [
-            URLQueryItem(name: "page", value: "\(page)"),
-            URLQueryItem(name: "per_page", value: "\(Constants.Photos.perPage)")
-        ]
-        guard let url = urlComponents.url
-        else {
-            debugPrint("[ImagesListService getPhotosRequest] url is nil")
-            return nil
-        }
-        var request = URLRequest(url: url)
-        guard let token = oAuth2Storage.token else {
-            preconditionFailure("Token is nil")
-        }
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
     

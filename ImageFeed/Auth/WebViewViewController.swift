@@ -13,11 +13,14 @@ final class WebViewViewController: UIViewController {
     
     weak var delegate: WebViewViewControllerDelegate?
     private var estimatedProgressObservation: NSKeyValueObservation?
+    
     // MARK: - IB Outlets
+    
     @IBOutlet private var webView: WKWebView!
     @IBOutlet weak var progressView: UIProgressView!
     
     // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         webView.navigationDelegate = self
@@ -41,8 +44,9 @@ final class WebViewViewController: UIViewController {
     }
     
     // MARK: - Private methods
+    
     private func loadAuthView() {
-        guard var urlComponents = URLComponents(string: Constants.Auth.authorizeURLString) 
+        guard var urlComponents = URLComponents(string: Constants.Auth.authorizeURLString)
         else {
             debugPrint("[WebViewViewController loadAuthView] some problem with authorizeURLString")
             return
@@ -53,7 +57,7 @@ final class WebViewViewController: UIViewController {
             URLQueryItem(name: "response_type", value: "code"),
             URLQueryItem(name: "scope", value: Constants.API.accessScope)
         ]
-        guard let url = urlComponents.url 
+        guard let url = urlComponents.url
         else {
             debugPrint("[WebViewViewController loadAuthView] some problem with queryItems")
             return
@@ -70,6 +74,7 @@ final class WebViewViewController: UIViewController {
 }
 
 // MARK: - WKNavigationDelegate
+
 extension WebViewViewController: WKNavigationDelegate {
     func webView(
         _ webView: WKWebView,

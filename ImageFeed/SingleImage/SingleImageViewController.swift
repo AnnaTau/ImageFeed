@@ -9,6 +9,7 @@ import UIKit
 import Kingfisher
 
 final class SingleImageViewController: UIViewController {
+    
     var image: UIImage? {
         didSet {
             guard isViewLoaded, let image = image else { return }
@@ -20,12 +21,14 @@ final class SingleImageViewController: UIViewController {
     var fullImageURLString: String?
     
     // MARK: - IB Outlets
+    
     @IBOutlet private var shareButton: UIButton!
     @IBOutlet private var backwardButton: UIButton!
     @IBOutlet var imageView: UIImageView!
     @IBOutlet private var scrollView: UIScrollView!
     
     // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         loadImage()
@@ -91,6 +94,7 @@ final class SingleImageViewController: UIViewController {
     }
     
     // MARK: - IBActions
+    
     @IBAction private func didTapBackButton() {
         dismiss(animated: true, completion: nil)
     }
@@ -106,6 +110,7 @@ final class SingleImageViewController: UIViewController {
 }
 
 // MARK: - UIScrollViewDelegate
+
 extension SingleImageViewController: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         imageView

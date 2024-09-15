@@ -1,34 +1,27 @@
 import UIKit
 
 final class ImagesListViewController: UIViewController {
+    
     // MARK: - IB Outlets
+    
     @IBOutlet private var tableView: UITableView!
     
     // MARK: - Private Properties
     private var photos: [Photo] = []
-    private let showSingleImageSegueIdentifier = "ShowSingleImage"
     private let imagesListService = ImagesListService.shared
     private var imagesListServiceObserver: NSObjectProtocol?
     
     // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.rowHeight = 200
-        tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
-        imagesListServiceObserver = NotificationCenter.default
-            .addObserver(
-                forName: ImagesListService.didChangeNotification,
-                object: nil,
-                queue: .main
-            ) { [weak self] _ in
-                guard let self = self else { return }
-                self.updateTableViewAnimated()
-            }
+        setupLayout()
+        setupNotifications()
         fetchNextPhotos()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == showSingleImageSegueIdentifier {
+        if segue.identifier == Constants.Segues.showSingleImageSegueIdentifier {
             guard
                 let viewController = segue.destination as? SingleImageViewController,
                 let indexPath = sender as? IndexPath
@@ -60,7 +53,7 @@ final class ImagesListViewController: UIViewController {
     func fetchNextPhotos() {
         imagesListService.fetchPhotosNextPage() { result in
             switch result {
-            case .success(let body):
+            case .success(_):
                 debugPrint("[ImagesListViewController fetchNextPhotos] Next pack of images loaded")
             case .failure(let error):
                 debugPrint("[ImagesListViewController fetchNextPhotos] Next pack of images loading failed\n \(error)")
@@ -68,12 +61,31 @@ final class ImagesListViewController: UIViewController {
         }
     }
     
+    // MARK: - Private methods for setup view
+    
+    private func setupLayout() {
+        tableView.rowHeight = 200
+        tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+    }
+    
+    private func setupNotifications() {
+        imagesListServiceObserver = NotificationCenter.default.addObserver(
+                forName: ImagesListService.didChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let self = self else { return }
+                self.updateTableViewAnimated()
+            }
+    }
+    
 }
 
 // MARK: - UITableViewDelegate
+
 extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: showSingleImageSegueIdentifier, sender: indexPath)
+        performSegue(withIdentifier: Constants.Segues.showSingleImageSegueIdentifier, sender: indexPath)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -94,6 +106,7 @@ extension ImagesListViewController: UITableViewDelegate {
 }
 
 // MARK: - UITableViewDataSource
+
 extension ImagesListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return photos.count
@@ -105,7 +118,7 @@ extension ImagesListViewController: UITableViewDataSource {
         else {
             debugPrint("[ImagesListViewController tableView] Cell is not ImagesListCell")
             return UITableViewCell()
-        }	
+        }
         imageListCell.delegate = self
         imageListCell.configCell(tableView, photo: photos[indexPath.row])
         return imageListCell
@@ -114,6 +127,7 @@ extension ImagesListViewController: UITableViewDataSource {
 }
 
 // MARK: - ImagesListCellDelegate
+
 extension ImagesListViewController: ImagesListCellDelegate {
     func imageListCellDidTapLike(_ cell: ImagesListCell) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
@@ -141,11 +155,12 @@ extension ImagesListViewController: ImagesListCellDelegate {
                     }
                 }
             case .failure(let error):
-                debugPrint("[ImagesListViewController imageListCellDidTapLike] Like/unlike request failed\n \(error)")
-                UIBlockingProgressHUD.dismiss()
+                DispatchQueue.main.async {
+                    debugPrint("[ImagesListViewController imageListCellDidTapLike] Like/unlike request failed\n \(error)")
+                    UIBlockingProgressHUD.dismiss()
+                }
             }
         }
-        
     }
     
 }
