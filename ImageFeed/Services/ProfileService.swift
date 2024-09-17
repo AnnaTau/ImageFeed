@@ -17,7 +17,7 @@ final class ProfileService {
     
     func fetchProfile(handler: @escaping(_ result: Result<ProfileResult, Error>) -> Void) {
         assert(Thread.isMainThread)
-        if task != nil {
+        guard task == nil else {
             return
         }
 
@@ -38,6 +38,7 @@ final class ProfileService {
                 debugPrint("[ProfileService fetchProfile] Invalid request/n \(error)")
                 handler(.failure(error))
             }
+            self.task = nil
         }
         self.task = task
         task.resume()
@@ -55,17 +56,14 @@ final class ProfileService {
         return request
     }
     
+    func cleanProfile() {
+        profile = nil
+    }
+    
     private func convert(profileResult: ProfileResult) -> Profile {
         return Profile(
             username: profileResult.username,
             name: "\(profileResult.firstName ?? "") \(profileResult.lastName ?? "")",
             bio: profileResult.bio)
     }
-}
-
-struct ProfileResult: Codable {
-    let username: String
-    let firstName: String?
-    let lastName: String?
-    let bio: String?
 }

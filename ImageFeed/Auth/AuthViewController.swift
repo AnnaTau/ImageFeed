@@ -9,16 +9,17 @@ import UIKit
 import ProgressHUD
 
 final class AuthViewController: UIViewController {
+    
     weak var delegate: AuthViewControllerDelegate?
     
     // MARK: - Private properties
-    private let WebViewSegueIdentifier = "WebViewSegue"
     private let oAuth2Service = OAuth2Service.shared
     private let oAuth2Storage = OAuth2TokenStorageService.shared
 
     @IBOutlet var loginButton: UIButton!
     
     // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureLoginButton()
@@ -27,7 +28,7 @@ final class AuthViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if
-            segue.identifier == WebViewSegueIdentifier,
+            segue.identifier == Constants.Segues.webViewSegueIdentifier,
             let webViewViewController = segue.destination as? WebViewViewController
         {
             webViewViewController.delegate = self
@@ -37,6 +38,7 @@ final class AuthViewController: UIViewController {
     }
     
     // MARK: - Private methods
+    
     private func configureBackButton() {
         navigationController?.navigationBar.backIndicatorImage = UIImage(named: "nav_back_button")
         navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "nav_back_button")

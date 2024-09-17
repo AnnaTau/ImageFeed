@@ -8,12 +8,14 @@
 import UIKit
 
 final class SplashViewController: UIViewController {
+    
     private let oAuth2Storage = OAuth2TokenStorageService.shared
     private let profileService = ProfileService.shared
     
     private let logoImage: UIImageView = UIImageView()
     
     // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         view.backgroundColor = .ypBlack
         
@@ -36,7 +38,6 @@ final class SplashViewController: UIViewController {
         if let token = oAuth2Storage.token {
             debugPrint(token)
             fetchProfile(token)
-            switchToTabBarController()
         } else {
             let storyboard = UIStoryboard(name: "Main", bundle: .main)
             guard
@@ -67,6 +68,7 @@ final class SplashViewController: UIViewController {
 }
 
 // MARK: - AuthViewControllerDelegate
+
 extension SplashViewController: AuthViewControllerDelegate {
     func didAuthenticate(_ vc: AuthViewController) {
         vc.dismiss(animated: true)
@@ -74,7 +76,6 @@ extension SplashViewController: AuthViewControllerDelegate {
             return
         }
         fetchProfile(token)
-        switchToTabBarController()
         UIBlockingProgressHUD.dismiss()
     }
     
@@ -86,7 +87,7 @@ extension SplashViewController: AuthViewControllerDelegate {
                 debugPrint("[SplashViewController fetchProfile] Start loading avatar")
                 ProfileImageService.shared.fetchProfileImageURL(username: profileResult.username) { result in
                     switch result {
-                    case .success(let avatarResult):
+                    case .success(_):
                         debugPrint("[SplashViewController fetchProfile] Avatar loaded")
                     case .failure(let error):
                         debugPrint("[SplashViewController fetchProfile] Avatar loading failed\n \(error)")
@@ -96,6 +97,18 @@ extension SplashViewController: AuthViewControllerDelegate {
                 UIBlockingProgressHUD.dismiss()
             case .failure(let error):
                 debugPrint("[SplashViewController fetchProfile] Profile loading failed\n \(error)")
+                let alert = UIAlertController(title: "Что-то пошло не так",
+                                              message: "Попробовать ещё раз?",
+                                              preferredStyle: .alert)
+                let action = UIAlertAction(title: "Не надо", style: .default) { _ in
+                    alert.dismiss(animated: true)
+                }
+                let reload = UIAlertAction(title: "Повторить", style: .default) { [self] _ in
+                    self.fetchProfile(token)
+                }
+                alert.addAction(action)
+                alert.addAction(reload)
+                self.present(alert, animated: true, completion: nil)
             }
         }
         UIBlockingProgressHUD.dismiss()

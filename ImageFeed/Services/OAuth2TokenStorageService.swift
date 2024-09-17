@@ -27,4 +27,11 @@ final class OAuth2TokenStorageService {
             
         }
     }
+    
+    func cleanToken() {
+        let removeSuccessful: Bool = KeychainWrapper.standard.removeObject(forKey: Constants.Token.storageKey)
+        guard removeSuccessful else {
+            preconditionFailure("Removing auth token was fail")
+        }
+    }
 }

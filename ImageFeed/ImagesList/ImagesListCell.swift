@@ -1,7 +1,9 @@
 import UIKit
+import Kingfisher
 
 final class ImagesListCell: UITableViewCell {
     static let reuseIdentifier = "ImagesListCell"
+    weak var delegate: ImagesListCellDelegate?
     
     // MARK: - IB Outlets
     @IBOutlet private var cellImage: UIImageView!
@@ -16,11 +18,28 @@ final class ImagesListCell: UITableViewCell {
         return formatter
     }()
     
-    public func configCell(with indexPath: IndexPath) {
-        guard let image = UIImage(named: "\(indexPath.row)") else { return }
-        cellImage.image = image
-        dateLabel.text = dateFormatter.string(from: Date())
-        if indexPath.row % 2 == 0 {
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        cellImage.kf.cancelDownloadTask()
+    }
+    
+    public func configCell(_ tableView: UITableView, photo: Photo) {
+        guard let url: URL = URL(string: photo.thumbImageURL)
+        else {
+            debugPrint("[ImagesListCell configCell] Problem with URL \(photo.thumbImageURL)")
+            return
+        }
+        let isLiked = photo.isLiked
+        cellImage.kf.indicatorType = IndicatorType.activity
+        cellImage.kf.setImage(with: url,
+                              placeholder: UIImage(named: "Stub"),
+                              options: [])
+        dateLabel.text = dateFormatter.string(for: photo.createdAt)
+        setIsLiked(isLike: isLiked)
+    }
+    
+    func setIsLiked(isLike: Bool) {
+        if isLike {
             guard let likeOn = UIImage(named: "like_button_on") else { return }
             likeButton.imageView?.image = likeOn
         } else {
@@ -28,4 +47,9 @@ final class ImagesListCell: UITableViewCell {
             likeButton.imageView?.image = likeOff
         }
     }
+    
+    @IBAction func tapLikeButton() {
+        delegate?.imageListCellDidTapLike(self)
+    }
+    
 }

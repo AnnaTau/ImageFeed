@@ -11,20 +11,22 @@ import Kingfisher
 final class ProfileViewController: UIViewController {
     // MARK: - Private Properties
     private let profileService = ProfileService.shared
+    private let profileLogoutService = ProfileLogoutService.shared
     private var profileImageServiceObserver: NSObjectProtocol?
     private let avatarImage: UIImageView = UIImageView()
     private let exitButton: UIButton = UIButton()
     private let nameLabel: UILabel = configLabel(text: "Екатерина Новикова",
-                                         font: UIFont.systemFont(ofSize: 23, weight: .semibold),
-                                         color: .ypWhite)
+                                                 font: UIFont.systemFont(ofSize: 23, weight: .semibold),
+                                                 color: .ypWhite)
     private let loginNameLabel: UILabel = configLabel(text: "@ekaterina_nov",
-                                              font: UIFont.systemFont(ofSize: 13),
-                                              color: .ypGrey)
+                                                      font: UIFont.systemFont(ofSize: 13),
+                                                      color: .ypGrey)
     private let descriptionLabel: UILabel = configLabel(text: "Hello, World!",
-                                                font: UIFont.systemFont(ofSize: 13),
-                                                color: .ypWhite)
+                                                        font: UIFont.systemFont(ofSize: 13),
+                                                        color: .ypWhite)
     
     // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -44,12 +46,11 @@ final class ProfileViewController: UIViewController {
         view.backgroundColor = .ypBlack
         
         avatarImage.translatesAutoresizingMaskIntoConstraints = false
-        let imageAvatar = UIImage(named: "avatar")
-        avatarImage.image = imageAvatar
         
         exitButton.translatesAutoresizingMaskIntoConstraints = false
         let imageButton = UIImage(named: "logout_button")
         exitButton.setImage(imageButton, for: .normal)
+        exitButton.addTarget(self, action: #selector(tapLogoutButton), for: UIControl.Event.touchUpInside)
         
         addAllSubviews()
         
@@ -81,6 +82,7 @@ final class ProfileViewController: UIViewController {
     }
     
     // MARK: - Private functions
+    
     private static func configLabel(text: String, font: UIFont, color: UIColor) -> UILabel {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -106,11 +108,35 @@ final class ProfileViewController: UIViewController {
         let processor = RoundCornerImageProcessor(cornerRadius: 80)
         avatarImage.backgroundColor = .ypBlack
         avatarImage.tintColor = .ypBlack
+        avatarImage.kf.indicatorType = IndicatorType.activity
         avatarImage.kf.setImage(with: url,
-                              placeholder: UIImage(named: "placeholder.jpeg"),
-                              options: [
-                                .processor(processor),
-                                .cacheSerializer(FormatIndicatedCacheSerializer.png)
-                              ])
+                                placeholder: UIImage(named: "placeholder"),
+                                options: [
+                                    .processor(processor),
+                                    .cacheSerializer(FormatIndicatedCacheSerializer.png)
+                                ]) { _ in
+                                    debugPrint("Avatar installed")
+                                }
+    }
+    
+    @objc private func tapLogoutButton() {
+        let alert = UIAlertController(title: "Пока, пока!",
+                                      message: "Уверены что хотите выйти?",
+                                      preferredStyle: .alert)
+        let yes = UIAlertAction(title: "Да", style: .default) { [self] _ in
+            self.profileLogoutService.logout()
+            guard let window = UIApplication.shared.windows.first else {
+                assertionFailure("Invalid window configuration")
+                return
+            }
+            window.rootViewController = SplashViewController()
+            window.makeKeyAndVisible()
+        }
+        let no = UIAlertAction(title: "Нет", style: .default) { _ in
+            alert.dismiss(animated: true)
+        }
+        alert.addAction(yes)
+        alert.addAction(no)
+        self.present(alert, animated: true, completion: nil)
     }
 }

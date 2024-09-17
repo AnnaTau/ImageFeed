@@ -18,7 +18,7 @@ final class ProfileImageService {
     
     func fetchProfileImageURL(username: String, _ handler: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
-        if task != nil {
+        guard task == nil else {
             return
         }
         
@@ -44,6 +44,7 @@ final class ProfileImageService {
                 debugPrint("[ProfileImageService fetchProfileImageURL] Invalid request/n \(error)")
                 handler(.failure(error))
             }
+            self.task = nil
         }
         self.task = task
         task.resume()
@@ -59,5 +60,9 @@ final class ProfileImageService {
         }
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
+    }
+    
+    func cleanAvatar() {
+        avatarURL = nil
     }
 }
