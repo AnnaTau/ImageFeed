@@ -31,7 +31,8 @@ final class AuthViewController: UIViewController {
             segue.identifier == Constants.Segues.webViewSegueIdentifier,
             let webViewViewController = segue.destination as? WebViewViewController
         {
-            let webViewPresenter = WebViewPresenter()
+            let authHelper = AuthHelper()
+            let webViewPresenter = WebViewPresenter(authHelper: authHelper)
             webViewViewController.presenter = webViewPresenter
             webViewPresenter.view = webViewViewController
             webViewViewController.delegate = self

@@ -12,7 +12,7 @@ final class ImagesListService {
     static let shared = ImagesListService()
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
     private let oAuth2Storage = OAuth2TokenStorageService.shared
-    private (set) var photos: [Photo] = []
+    private(set) var photos: [Photo] = []
     private var lastLoadedPage: Int = 0
     private var task: URLSessionTask?
     private var likeTask: URLSessionTask?
