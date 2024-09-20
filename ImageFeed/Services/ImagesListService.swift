@@ -161,4 +161,18 @@ final class ImagesListService {
         lastLoadedPage = 0
     }
     
+    func changeLikeState(for row: Int) {
+        let photo = photos[row]
+        let newPhoto = Photo(
+            id: photo.id,
+            size: photo.size,
+            createdAt: photo.createdAt,
+            welcomeDescription: photo.welcomeDescription,
+            thumbImageURL: photo.thumbImageURL,
+            largeImageURL: photo.largeImageURL,
+            isLiked: !photo.isLiked
+        )
+        photos[row] = newPhoto
+    }
+    
 }
