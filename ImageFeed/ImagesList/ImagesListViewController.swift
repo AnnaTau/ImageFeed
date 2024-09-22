@@ -3,6 +3,8 @@ import UIKit
 public protocol ImagesListViewControllerProtocol: AnyObject {
     var presenter: ImagesListPresenterProtocol? { get set }
     func setLikeState(for row: Int, newState: Bool)
+    func viewDidLoad()
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath)
 }
 
 final class ImagesListViewController: UIViewController, ImagesListViewControllerProtocol {

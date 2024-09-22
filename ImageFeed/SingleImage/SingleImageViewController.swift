@@ -16,6 +16,7 @@ final class SingleImageViewController: UIViewController {
             imageView.image = image
             imageView.frame.size = image.size
             rescaleAndCenterImageInScrollView(image: image)
+            imageView.accessibilityIdentifier = "full_image"
         }
     }
     var fullImageURLString: String?
@@ -33,6 +34,7 @@ final class SingleImageViewController: UIViewController {
         super.viewDidLoad()
         loadImage()
         setScales()
+        backwardButton.accessibilityIdentifier = "nav_back_button"
     }
     
     private func rescaleAndCenterImageInScrollView(image: UIImage) {
@@ -71,6 +73,7 @@ final class SingleImageViewController: UIViewController {
             switch result {
             case .success(let imageResult):
                 self.image = imageResult.image
+                
             case .failure:
                 UIBlockingProgressHUD.dismiss()
                 self.showError()

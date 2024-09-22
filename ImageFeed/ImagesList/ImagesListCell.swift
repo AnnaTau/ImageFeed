@@ -41,9 +41,11 @@ final class ImagesListCell: UITableViewCell {
         if isLike {
             guard let likeOn = UIImage(named: "like_button_on") else { return }
             likeButton.imageView?.image = likeOn
+            likeButton.accessibilityIdentifier = "like_button_on"
         } else {
             guard let likeOff = UIImage(named: "like_button_off") else { return }
             likeButton.imageView?.image = likeOff
+            likeButton.accessibilityIdentifier = "like_button_off"
         }
     }
     

@@ -17,19 +17,19 @@ public protocol ProfileViewControllerProtocol: AnyObject {
 final class ProfileViewController: UIViewController {
     var presenter: ProfilePresenterProtocol?
     
+    // MARK: - Labels
+    let nameLabel: UILabel = configLabel(font: UIFont.systemFont(ofSize: 23, weight: .semibold),
+                                         color: .ypWhite)
+    let loginNameLabel: UILabel = configLabel(font: UIFont.systemFont(ofSize: 13),
+                                              color: .ypGrey)
+    let descriptionLabel: UILabel = configLabel(font: UIFont.systemFont(ofSize: 13),
+                                                color: .ypWhite)
+    
     // MARK: - Private Properties
+    
     private var profileImageServiceObserver: NSObjectProtocol?
     private let avatarImage: UIImageView = UIImageView()
     private let exitButton: UIButton = UIButton()
-    private let nameLabel: UILabel = configLabel(text: "Екатерина Новикова",
-                                                 font: UIFont.systemFont(ofSize: 23, weight: .semibold),
-                                                 color: .ypWhite)
-    private let loginNameLabel: UILabel = configLabel(text: "@ekaterina_nov",
-                                                      font: UIFont.systemFont(ofSize: 13),
-                                                      color: .ypGrey)
-    private let descriptionLabel: UILabel = configLabel(text: "Hello, World!",
-                                                        font: UIFont.systemFont(ofSize: 13),
-                                                        color: .ypWhite)
     
     // MARK: - Lifecycle
     
@@ -55,6 +55,7 @@ final class ProfileViewController: UIViewController {
         let imageButton = UIImage(named: "logout_button")
         exitButton.setImage(imageButton, for: .normal)
         exitButton.addTarget(self, action: #selector(tapLogoutButton), for: UIControl.Event.touchUpInside)
+        exitButton.accessibilityIdentifier = "logoutButton"
         
         addAllSubviews()
         addConstraints()
@@ -62,10 +63,9 @@ final class ProfileViewController: UIViewController {
     
     // MARK: - Private functions for config view
     
-    private static func configLabel(text: String, font: UIFont, color: UIColor) -> UILabel {
+    private static func configLabel(font: UIFont, color: UIColor) -> UILabel {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = text
         label.font = font
         label.textColor = color
         return label
@@ -121,6 +121,8 @@ final class ProfileViewController: UIViewController {
         }
         alert.addAction(yes)
         alert.addAction(no)
+        yes.accessibilityIdentifier = "yesAlertButton"
+        no.accessibilityIdentifier = "noAlertButton"
         self.present(alert, animated: true, completion: nil)
     }
 }
