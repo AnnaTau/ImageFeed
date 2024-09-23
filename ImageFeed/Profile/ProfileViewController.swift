@@ -72,11 +72,14 @@ final class ProfileViewController: UIViewController {
     }
     
     private func addAllSubviews() {
-        view.addSubview(avatarImage)
-        view.addSubview(nameLabel)
-        view.addSubview(loginNameLabel)
-        view.addSubview(descriptionLabel)
-        view.addSubview(exitButton)
+        [avatarImage,
+         nameLabel,
+         loginNameLabel,
+         descriptionLabel,
+         exitButton].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview($0)
+        }
     }
     
     private func addConstraints() {
@@ -145,13 +148,13 @@ extension ProfileViewController: ProfileViewControllerProtocol {
         avatarImage.backgroundColor = .ypBlack
         avatarImage.tintColor = .ypBlack
         avatarImage.kf.indicatorType = IndicatorType.activity
-        avatarImage.kf.setImage(with: url,
-                                placeholder: UIImage(named: "placeholder"),
-                                options: [
-                                    .processor(processor),
-                                    .cacheSerializer(FormatIndicatedCacheSerializer.png)
-                                ]) { _ in
-                                    debugPrint("Avatar installed")
-                                }
+        avatarImage.kf.setImage(
+            with: url,
+            placeholder: UIImage(named: "placeholder"),
+            options: [
+                .processor(processor),
+                .cacheSerializer(FormatIndicatedCacheSerializer.png)
+            ]
+        ) { _ in debugPrint("Avatar installed") }
     }
 }
