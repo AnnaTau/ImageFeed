@@ -41,3 +41,41 @@ enum Constants {
         static let webViewSegueIdentifier = "WebViewSegue"
     }
 }
+
+struct AuthConfiguration {
+    let accessKey: String
+    let secretKey: String
+    let redirectURI: String
+    let accessScope: String
+    let defaultBaseURL: URL
+    let authURLString: String
+    
+    init(accessKey: String,
+         secretKey: String,
+         redirectURI: String,
+         accessScope: String,
+         authURLString: String,
+         defaultBaseURL: URL
+    ) {
+        self.accessKey = accessKey
+        self.secretKey = secretKey
+        self.redirectURI = redirectURI
+        self.accessScope = accessScope
+        self.defaultBaseURL = defaultBaseURL
+        self.authURLString = authURLString
+    }
+    
+    static var standard: AuthConfiguration {
+        guard let baseURL = Constants.Auth.defaultBaseURL else {
+            preconditionFailure("Wrong base URL")
+        }
+        return .init(
+            accessKey: Constants.API.accessKey,
+            secretKey: Constants.API.secretKey,
+            redirectURI: Constants.API.redirectURI,
+            accessScope: Constants.API.accessScope,
+            authURLString: Constants.Auth.authorizeURLString,
+            defaultBaseURL: baseURL
+        )
+    }
+}

@@ -23,18 +23,17 @@ final class ImagesListCell: UITableViewCell {
         cellImage.kf.cancelDownloadTask()
     }
     
-    public func configCell(_ tableView: UITableView, photo: Photo) {
-        guard let url: URL = URL(string: photo.thumbImageURL)
+    public func configCell(_ tableView: UITableView, thumbImageURL: String, isLiked: Bool, createdAt: Date?) {
+        guard let url: URL = URL(string: thumbImageURL)
         else {
-            debugPrint("[ImagesListCell configCell] Problem with URL \(photo.thumbImageURL)")
+            debugPrint("[ImagesListCell configCell] Problem with URL \(thumbImageURL)")
             return
         }
-        let isLiked = photo.isLiked
         cellImage.kf.indicatorType = IndicatorType.activity
         cellImage.kf.setImage(with: url,
                               placeholder: UIImage(named: "Stub"),
                               options: [])
-        dateLabel.text = dateFormatter.string(for: photo.createdAt)
+        dateLabel.text = dateFormatter.string(for: createdAt)
         setIsLiked(isLike: isLiked)
     }
     
@@ -42,9 +41,11 @@ final class ImagesListCell: UITableViewCell {
         if isLike {
             guard let likeOn = UIImage(named: "like_button_on") else { return }
             likeButton.imageView?.image = likeOn
+            likeButton.accessibilityIdentifier = "like_button_on"
         } else {
             guard let likeOff = UIImage(named: "like_button_off") else { return }
             likeButton.imageView?.image = likeOff
+            likeButton.accessibilityIdentifier = "like_button_off"
         }
     }
     

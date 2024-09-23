@@ -31,6 +31,10 @@ final class AuthViewController: UIViewController {
             segue.identifier == Constants.Segues.webViewSegueIdentifier,
             let webViewViewController = segue.destination as? WebViewViewController
         {
+            let authHelper = AuthHelper()
+            let webViewPresenter = WebViewPresenter(authHelper: authHelper)
+            webViewViewController.presenter = webViewPresenter
+            webViewPresenter.view = webViewViewController
             webViewViewController.delegate = self
         } else {
             super.prepare(for: segue, sender: sender)
@@ -49,6 +53,7 @@ final class AuthViewController: UIViewController {
     private func configureLoginButton() {
         loginButton.layer.cornerRadius = 16
         loginButton.layer.masksToBounds = true
+        loginButton.accessibilityIdentifier = "Authenticate"
     }
 }
 

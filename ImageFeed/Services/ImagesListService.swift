@@ -12,7 +12,7 @@ final class ImagesListService {
     static let shared = ImagesListService()
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
     private let oAuth2Storage = OAuth2TokenStorageService.shared
-    private (set) var photos: [Photo] = []
+    private(set) var photos: [Photo] = []
     private var lastLoadedPage: Int = 0
     private var task: URLSessionTask?
     private var likeTask: URLSessionTask?
@@ -28,6 +28,11 @@ final class ImagesListService {
         let nextPage = lastLoadedPage + 1
         assert(Thread.isMainThread)
         guard task == nil else {
+            return
+        }
+        
+        //ограничиваем количество запросов для UI тестов
+        if ProcessInfo().environment["isUITesting"] == "YES" && nextPage > 1 {
             return
         }
         
@@ -159,6 +164,20 @@ final class ImagesListService {
     func cleanImages() {
         photos.removeAll()
         lastLoadedPage = 0
+    }
+    
+    func changeLikeState(for row: Int) {
+        let photo = photos[row]
+        let newPhoto = Photo(
+            id: photo.id,
+            size: photo.size,
+            createdAt: photo.createdAt,
+            welcomeDescription: photo.welcomeDescription,
+            thumbImageURL: photo.thumbImageURL,
+            largeImageURL: photo.largeImageURL,
+            isLiked: !photo.isLiked
+        )
+        photos[row] = newPhoto
     }
     
 }
